@@ -1,45 +1,55 @@
-import React from "react";
+import "./App.scss";
+import React, { Component } from "react";
+import { Link, Route } from "react-router-dom";
+import Home from "./pages/Home.jsx";
 
-import Home from "./pages/Home"
-import About from "./pages/About"
+// import {
+//   BrowserRouter as Router,
+//   Switch,
+//   Route,
+//   Link
+// } from "react-router-dom";
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
+class App extends Component {
+  state = {
+    test: true,
+  };
 
-export default function App() {
-  return (
-    <Router>
-      <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
-            <li>
-              <Link to="/users">Users</Link>
-            </li>
-          </ul>
-        </nav>
+  hide(e) {
+    this.setState({
+      homeLinks: true,
+    });
+  }
 
-        {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
-        <Switch>
-          <Route path="/about">
-            <About />
-          </Route>
-          <Route path="/">
-            <Home />
-          </Route>
-        </Switch>
+  // //RESET STATE ON BACK
+  // //or on load ... i think?
+  // componentDidMount(){
+  //   window.onpopstate = () =>{
+  //     this.setState({
+  //       test:true
+  //     })
+  //   }
+  // }
+
+  render() {
+    return (
+      <div id="container">
+        <div id="mainSidebar">
+          <Link to="/">
+            <img src="./assets/GuiaLogo1.svg" alt="Logo" id="mainLogo"></img>
+          </Link>
+        </div>
+        <div id="mainContainer">
+          <Route
+            path="/"
+            render={(props) => (
+              <Home {...props} Hide={(e) => this.hide(e)}></Home>
+            )}
+          ></Route>
+        </div>
       </div>
-    </Router>
-  );
+    );
+  }
 }
 
+export default App;

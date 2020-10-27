@@ -1,0 +1,30 @@
+@import './scss/common.scss';
+@import './scss/home.scss';
+html {
+  overflow-x: hidden;
+  background-color: $backGroundGrey;
+}
+
+#mainLogo {
+  // width: 100%;
+  margin: 10px;
+}
+#container {
+  // border: $mainBorder;
+  display: flex;
+  flex-direction: row;
+  // width: 90%;
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  background-color: $backGroundWhite;
+}
+
+#mainSidebar {
+  // border: $mainBorder;
+  min-height: 100vh;
+  width: 7%;
+  margin-right: 2%;
+  padding: 1%;
+  background-color: $backGroundDarkGrey;
+}
