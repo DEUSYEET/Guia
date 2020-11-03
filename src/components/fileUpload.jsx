@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import axios from "axios";
 
 class FileUpload extends Component {
-  url = "http://localhost:8080/uploadImage";
-  //url = "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/uploadImage";
+  // url = "http://localhost:8080/uploadImage";
+  url = "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/uploadImage";
 
   state = {
     file: null,
