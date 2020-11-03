@@ -1,9 +1,15 @@
 @import './scss/common.scss';
 @import './scss/home.scss';
+@import './scss/guideCreator.scss';
 html {
   overflow-x: hidden;
   background-color: $backGroundGrey;
 }
+a{
+  text-decoration: none;
+  color: inherit;
+}
+
 
 #mainLogo {
   // width: 100%;

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-// import YouTube from "react-youtube";
 const tools = require("../tools");
 
 class GuidePreview extends Component {
@@ -36,8 +35,7 @@ class GuidePreview extends Component {
           <div className="guidePreviewTitle">{this.guide.title}</div>
           <div className="guidePreviewAuthor">{this.guide.author || "Anonymous"}</div>
           <div className="guidePreviewDesc">{this.guide.description}</div>
-          <div className="guidePreviewScore"> 👍{this.guide.scoreUp || 0} / 👎{this.guide.scoreDown || 0}</div>
-          {/* <YouTube videoId={tools.getVidID(this.url)}></YouTube> */}
+          <div className="guidePreviewScore"> <span role="img" aria-label="up">👍</span>{this.guide.scoreUp || 0} /<span role="img" aria-label="down"> 👎</span>{this.guide.scoreDown || 0}</div>
         </div>
       </div>
     );

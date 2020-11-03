@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import GuidePreview from "../components/guidePreview";
 
 // let url = "http://localhost:8080/getAll";
@@ -32,7 +33,9 @@ class Home extends Component {
         <div id="homeTitle">Featured Guides</div>
         <div id="homeGuideContainer">
           {this.state.guides.map((guide) => (
-            <GuidePreview guide={guide} key={guide.guideID} />
+            <Link to={"/guide?guideID=" + guide.guideID} key={guide.guideID}>
+            <GuidePreview guide={guide} />
+            </Link>
           ))}
         </div>
       </div>
