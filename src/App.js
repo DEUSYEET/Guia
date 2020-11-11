@@ -4,6 +4,7 @@ import { Link, Route, Switch } from "react-router-dom";
 import Home from "./pages/Home.jsx";
 import Guide from "./pages/Guide";
 import CreateGuide from './pages/CreateGuide'
+import LoginPage from './pages/LoginPage'
 
 // import {
 //   BrowserRouter as Router,
@@ -43,6 +44,9 @@ class App extends Component {
           <Link to="/createGuide">
             <div className="sidebarButton">Create Guide</div>
           </Link>
+          <Link to="/login">
+            <div className="sidebarButton">Login</div>
+          </Link>
         </div>
         <div id="mainContainer">
           <Switch>
@@ -51,6 +55,10 @@ class App extends Component {
               render={(props) => <FileUpload {...props}></FileUpload>}
             ></Route> */}
 
+            <Route
+              path="/login"
+              render={(props) => <LoginPage {...props}></LoginPage>}
+            ></Route>
             <Route
               path="/createGuide"
               render={(props) => <CreateGuide {...props}></CreateGuide>}

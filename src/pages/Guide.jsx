@@ -1,17 +1,21 @@
 import React, { Component } from "react";
 import YouTube from "react-youtube";
+import DeleteButton from '../components/deleteButton'
 const tools = require("../tools");
 
 class Guide extends Component {
   id = new URLSearchParams(this.props.location.search).get("guideID");
 
   // url = "http://localhost:8080/getGuide?guideId=" + this.id;
-  url = "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/getGuide?guideId=" + this.id;
+  url =
+    "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/getGuide?guideId=" +
+    this.id;
 
   state = {
     guideHead: {},
     guideSections: [],
   };
+
 
   getSections() {
     console.log(this.url);
@@ -29,7 +33,10 @@ class Guide extends Component {
 
   componentDidMount() {
     this.getSections();
+    console.log(this.props.history)
   }
+
+
 
   render() {
     return (
@@ -57,7 +64,6 @@ class Guide extends Component {
         <div id="guideSectionContainer">
           {this.state.guideSections.map((section) => (
             <div className="guideSection" key={section._id}>
-
               <div className="guideSectionTile">{section.title}</div>
 
               {!section.image && section.video && (
@@ -75,12 +81,15 @@ class Guide extends Component {
               )}
 
               <div className="guideSectionDesc">{section.description}</div>
-
             </div>
           ))}
         </div>
+      <DeleteButton id={this.id}/>
       </div>
     );
   }
 }
+
+
+
 export default Guide;

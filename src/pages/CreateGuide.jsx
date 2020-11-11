@@ -1,10 +1,12 @@
-import React, { Component, useEffect } from "react";
+import { v4 } from "uuid";
+import React, { Component } from "react";
 import FileUpload from "../components/fileUpload";
+import CreateGuideSection from "../components/guideSectionCreator";
 import axios from "axios";
 
 class guideHead {
   constructor() {
-    this.guideID = "";
+    this.guideID = v4();
     this.author = "";
     this.title = "";
     this.description = "";
@@ -15,46 +17,27 @@ class guideHead {
   }
 }
 
-// class guideSection {
-//   constructor() {
-//     this.guideID = null;
-//     this.title = null;
-//     this.description = null;
-//     this.image = null;
-//     this.video = null;
-//   }
-// }
-
 class CreateGuide extends Component {
-//   url = "http://localhost:8080/uploadGuideHead";
-  url = "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/uploadGuideHead";
+    url = "http://localhost:8080/uploadGuideHead";
+  // url = "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/uploadGuideHead";
 
   state = {
     guideHead: new guideHead(),
     guideSections: [],
   };
 
-  componentDidMount() {}
-
-  //   scrollOnMount = () =>{
-  //     useEffect (()=>{
-  //         window.scrollTo(0,0)
-  //       },[])
-  //   }
-
   onSaveGuide = () => {
     console.log(this.state.guideHead);
     let formData = new FormData();
     formData.append("file", JSON.stringify(this.state.guideHead));
     axios.post(this.url, formData).then((res) => {
-      // this.props.handler(res);
+      let button = document.getElementById('saveHeadButton');
+      button.classList = "saveButton";
+      button.innerHTML = "Saved"
     });
   };
 
   onAddHeadImg = (res) => {
-    // console.log(res.data.Location);
-    // console.log(res.data.Location);
-
     this.setState((prevState) => ({
       guideHead: {
         ...prevState.guideHead,
@@ -65,9 +48,31 @@ class CreateGuide extends Component {
     console.log(this.state.guideHead);
   };
 
+  onNotSaved = () =>{
+    let button = document.getElementById('saveHeadButton');
+    button.classList = "unsavedButton";
+    button.innerHTML = "Save Changes"
+  }
+
+
+  sectionIndex = 0;
+  addSection = () => {
+    this.setState((prevState) => ({
+      guideHead: {
+        ...prevState.guideHead,
+      },
+      guideSections: [
+        ...prevState.guideSections,
+        { key: this.sectionIndex, guideID: this.state.guideHead.guideID },
+      ],
+    }));
+    this.sectionIndex++;
+  };
+
   render() {
     return (
       <div id="guideCreator">
+        <div className="id">{this.state.guideHead.guideID}</div>
         <div id="guideCreatorHead">
           <input
             type="text"
@@ -81,6 +86,7 @@ class CreateGuide extends Component {
                   title: title,
                 },
               }));
+              this.onNotSaved();
             }}
           ></input>
           <textarea
@@ -95,6 +101,7 @@ class CreateGuide extends Component {
                   description: description,
                 },
               }));
+              this.onNotSaved();
             }}
           ></textarea>
           <div className="guideCreatorHeadAddImage">
@@ -105,8 +112,15 @@ class CreateGuide extends Component {
           <br />
           <br />
           <br />
-          <button onClick={this.onSaveGuide}>Save</button>
+        <div className="saveButton" id="saveHeadButton" onClick={this.onSaveGuide}>Saved</div>
+
         </div>
+        <div className="guideCreatorSections">
+          {this.state.guideSections.map((section) => (
+            <CreateGuideSection key={section.key} guideID={section.guideID} />
+          ))}
+        </div>
+        <button onClick={this.addSection}>Add Section</button>
       </div>
     );
   }

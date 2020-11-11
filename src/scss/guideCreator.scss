@@ -5,3 +5,19 @@
 .guideCreatorHeadAddImage{
     font-size: .7em;
 }
+
+.saveButton{
+    background-color: white;
+    font-size: 1em;
+    width: 50%;
+    text-align: center;
+    border-radius: 7px;
+    user-select: none;
+}
+.unsavedButton{
+    cursor: pointer;
+    @extend .saveButton;
+    background-color: red;
+    color: white;
+    font-weight: bold;
+}

@@ -1,15 +1,14 @@
-@import './scss/common.scss';
-@import './scss/home.scss';
-@import './scss/guideCreator.scss';
+@import "./scss/common.scss";
+@import "./scss/home.scss";
+@import "./scss/guideCreator.scss";
 html {
   overflow-x: hidden;
   background-color: $backGroundGrey;
 }
-a{
+a {
   text-decoration: none;
   color: inherit;
 }
-
 
 #mainLogo {
   // width: 100%;
@@ -33,4 +32,13 @@ a{
   margin-right: 2%;
   padding: 1%;
   background-color: $backGroundDarkGrey;
+}
+
+.deleteButton {
+  color: red;
+  cursor: pointer;
+}
+.deleteButton:hover {
+  font-weight: bold;
+  // text-decoration: underline;
 }
