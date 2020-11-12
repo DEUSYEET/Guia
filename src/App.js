@@ -3,8 +3,9 @@ import React, { Component } from "react";
 import { Link, Route, Switch } from "react-router-dom";
 import Home from "./pages/Home.jsx";
 import Guide from "./pages/Guide";
-import CreateGuide from './pages/CreateGuide'
-import LoginPage from './pages/LoginPage'
+import CreateGuide from "./pages/CreateGuide";
+import LoginPage from "./pages/LoginPage";
+import { logout, session, getUsername } from "./components/Authentication";
 
 // import {
 //   BrowserRouter as Router,
@@ -15,7 +16,7 @@ import LoginPage from './pages/LoginPage'
 
 class App extends Component {
   state = {
-    test: true,
+    user: false,
   };
 
   hide(e) {
@@ -34,6 +35,23 @@ class App extends Component {
   //   }
   // }
 
+  componentDidMount() {
+    session()
+      .then((val) => {
+        if (val) {
+          console.log("USER",val);
+          let {Value} = val.Attributes[2];
+          getUsername(Value).then(data=>{
+            console.log(data);
+          });
+          this.setState({
+            user: true,
+          });
+        }
+      })
+      .catch((err) => console.log(err));
+  }
+
   render() {
     return (
       <div id="container">
@@ -41,12 +59,20 @@ class App extends Component {
           <Link to="/">
             <img src="./assets/GuiaLogo1.svg" alt="Logo" id="mainLogo"></img>
           </Link>
-          <Link to="/createGuide">
-            <div className="sidebarButton">Create Guide</div>
-          </Link>
-          <Link to="/login">
-            <div className="sidebarButton">Login</div>
-          </Link>
+          {this.state.user ? (
+            <div className="signedInButtons">
+              <Link to="/createGuide">
+                <div className="sidebarButton">Create Guide</div>
+              </Link>
+              <div className="sidebarButton" onClick={logout}>
+                Sign Out
+              </div>
+            </div>
+          ) : (
+            <Link to="/login">
+              <div className="sidebarButton">Login</div>
+            </Link>
+          )}
         </div>
         <div id="mainContainer">
           <Switch>

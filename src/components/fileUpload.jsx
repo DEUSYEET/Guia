@@ -4,8 +4,8 @@ import { v4 } from "uuid";
 
 
 class FileUpload extends Component {
-  // url = "http://localhost:8080/uploadImage";
-  url = "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/uploadImage";
+  url = "http://localhost:8080/uploadImage";
+  // url = "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/uploadImage";
 
   state = {
     file: null,

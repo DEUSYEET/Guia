@@ -33,7 +33,7 @@ class CreateGuide extends Component {
     axios.post(this.url, formData).then((res) => {
       let button = document.getElementById('saveHeadButton');
       button.classList = "saveButton";
-      button.innerHTML = "Saved"
+      button.innerHTML = "Section Saved"
     });
   };
 
@@ -109,10 +109,7 @@ class CreateGuide extends Component {
             <p></p>
             <FileUpload handler={this.onAddHeadImg} />
           </div>
-          <br />
-          <br />
-          <br />
-        <div className="saveButton" id="saveHeadButton" onClick={this.onSaveGuide}>Saved</div>
+        <div className="saveButton" id="saveHeadButton" onClick={this.onSaveGuide}>Section Saved</div>
 
         </div>
         <div className="guideCreatorSections">

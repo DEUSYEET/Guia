@@ -1,6 +1,7 @@
 @import "./scss/common.scss";
 @import "./scss/home.scss";
 @import "./scss/guideCreator.scss";
+@import "./scss/guide.scss";
 html {
   overflow-x: hidden;
   background-color: $backGroundGrey;
@@ -32,13 +33,6 @@ a {
   margin-right: 2%;
   padding: 1%;
   background-color: $backGroundDarkGrey;
-}
-
-.deleteButton {
-  color: red;
-  cursor: pointer;
-}
-.deleteButton:hover {
-  font-weight: bold;
-  // text-decoration: underline;
+  display: flex;
+  flex-direction: column;
 }

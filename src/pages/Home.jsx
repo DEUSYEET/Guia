@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import GuidePreview from "../components/guidePreview";
 
+
 // let url = "http://localhost:8080/getAll";
 let url = "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/getAll";
 
@@ -25,6 +26,7 @@ class Home extends Component {
 
   componentDidMount() {
     this.getAll();
+
   }
 
   render() {
