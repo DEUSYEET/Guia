@@ -5,8 +5,16 @@ import axios from "axios";
 // const tools = require("../tools");
 
 class SignUpForm extends Component {
-  url = "http://localhost:8080/createUser";
-  //   url = "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/createUser";
+  url="";
+  componentDidMount(){
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+      this.url = "http://localhost:8080/createUser";
+      } else {
+        this.url = "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/createUser";
+      }
+  }
+
+
   userPool = new CognitoUserPool({
     UserPoolId: "us-east-2_r9mOSgn28",
     ClientId: "4id2vq725vkn530cdcj355d0dt",
@@ -56,6 +64,12 @@ class SignUpForm extends Component {
   render() {
     return (
       <div id="signUpForm">
+       <div id="signInHead">
+        Log In
+      </div>
+      <div className="signInLabel">
+        Email
+      </div>
         <input
           type="email"
           className="signUpFormInput"
@@ -68,6 +82,9 @@ class SignUpForm extends Component {
             }));
           }}
         ></input>
+         <div className="signInLabel">
+        Username
+      </div>
         <input
           type="text"
           className="signUpFormInput"
@@ -80,6 +97,9 @@ class SignUpForm extends Component {
             }));
           }}
         ></input>
+         <div className="signInLabel">
+        Password
+      </div>
         <input
           type="password"
           className="signUpFormInput"
@@ -92,7 +112,7 @@ class SignUpForm extends Component {
             }));
           }}
         ></input>
-        <div onClick={this.onSubmit}>Submit</div>
+        <div id="submitButton" onClick={this.onSubmit}>Submit</div>
       </div>
     );
   }

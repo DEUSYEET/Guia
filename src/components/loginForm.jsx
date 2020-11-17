@@ -21,6 +21,12 @@ class LogInForm extends Component {
   render() {
     return (
       <div id="signUpForm">
+      <div id="signInHead">
+        Log In
+      </div>
+      <div className="signInLabel">
+        Username
+      </div>
         <input
           type="text"
           className="signUpFormInput"
@@ -33,6 +39,9 @@ class LogInForm extends Component {
             }));
           }}
         ></input>
+              <div className="signInLabel">
+        Password
+      </div>
         <input
           type="password"
           className="signUpFormInput"
@@ -45,7 +54,7 @@ class LogInForm extends Component {
             }));
           }}
         ></input>
-        <div onClick={this.onSubmit}>Submit</div>
+        <div id="submitButton" onClick={this.onSubmit}>Submit</div>
       </div>
     );
   }

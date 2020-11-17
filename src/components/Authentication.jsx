@@ -61,14 +61,20 @@ const logout = () => {
   const user = pool.getCurrentUser();
   if (user) {
     user.signOut();
-    window.location.reload();
+    window.location.href = "/";
   }
 };
 
 const getUsername = async (email) =>
   await new Promise((resolve, reject) => {
-    let url = "http://localhost:8080/getUser";
-    // let url = "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/getUser";
+    let url = "";
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+      url = "http://localhost:8080/getUser";
+    } else {
+      url =
+        "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/getUser";
+    }
+
     let formData = new FormData();
     formData.append("file", JSON.stringify({ email: email }));
 

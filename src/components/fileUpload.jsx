@@ -4,9 +4,15 @@ import { v4 } from "uuid";
 
 
 class FileUpload extends Component {
-  url = "http://localhost:8080/uploadImage";
-  // url = "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/uploadImage";
-
+  url="";
+  componentDidMount(){
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+      this.url = "http://localhost:8080/uploadImage";
+      } else {
+        this.url = "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/uploadImage";
+      }
+  }
+  
   state = {
     file: null,
     id:v4()
@@ -25,7 +31,7 @@ class FileUpload extends Component {
     file.append("file",this.state.file,this.state.file.name)
     axios.post(this.url,file).then(res=>{
       this.props.handler(res);
-      document.getElementById(this.state.id).classList = "saveButton"
+      document.getElementById(this.state.id).classList = "saveFileButton"
     document.getElementById(this.state.id).innerHTML = "Image Saved"
     });
   };
@@ -37,7 +43,7 @@ class FileUpload extends Component {
     return (
       <div className="fileUpload">
         <input type="file" accept="image/*" onChange = {this.onChooseFile}></input>
-        <div className="saveButton" onClick={this.onUploadFile} id={this.state.id}>Save Image</div>
+        <div className="saveFileButton" onClick={this.onUploadFile} id={this.state.id}>Save Image</div>
       </div>
     );
   }

@@ -5,6 +5,7 @@ import Home from "./pages/Home.jsx";
 import Guide from "./pages/Guide";
 import CreateGuide from "./pages/CreateGuide";
 import LoginPage from "./pages/LoginPage";
+import SignUpPage from "./pages/SignUpPage";
 import { logout, session, getUsername } from "./components/Authentication";
 
 // import {
@@ -39,10 +40,10 @@ class App extends Component {
     session()
       .then((val) => {
         if (val) {
-          console.log("USER",val);
-          let {Value} = val.Attributes[2];
-          getUsername(Value).then(data=>{
-            console.log(data);
+          // console.log("USER",val);
+          let { Value } = val.Attributes[2];
+          getUsername(Value).then((data) => {
+            // console.log(data);
           });
           this.setState({
             user: true,
@@ -62,16 +63,21 @@ class App extends Component {
           {this.state.user ? (
             <div className="signedInButtons">
               <Link to="/createGuide">
-                <div className="sidebarButton">Create Guide</div>
+                <div className="sidebarButton bold">Create Guide</div>
               </Link>
               <div className="sidebarButton" onClick={logout}>
                 Sign Out
               </div>
             </div>
           ) : (
-            <Link to="/login">
-              <div className="sidebarButton">Login</div>
-            </Link>
+            <div className="signInButtons">
+              <Link to="/login">
+                <div className="sidebarButton bold">Login</div>
+              </Link>
+              <Link to="/signup">
+                <div className="sidebarButton bold">Sign Up</div>
+              </Link>
+            </div>
           )}
         </div>
         <div id="mainContainer">
@@ -84,6 +90,10 @@ class App extends Component {
             <Route
               path="/login"
               render={(props) => <LoginPage {...props}></LoginPage>}
+            ></Route>
+            <Route
+              path="/signup"
+              render={(props) => <SignUpPage {...props}></SignUpPage>}
             ></Route>
             <Route
               path="/createGuide"

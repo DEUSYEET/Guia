@@ -1,30 +1,47 @@
 #guideCreatorHead{
     display: flex;
     flex-direction: column;
-    border: 1px solid black;
+    // border: 1px solid black;
     margin: 10px;
     width: 100%;
     min-width: 50vw;
 }
+
+.guideCreatorLabel{
+    font-size: 1.5em;
+    font-weight: bold;
+    margin: 2% 0 0 0;
+}
+
+.guideCreatorHeadInput{
+    margin: 2% 0;
+}
+
 .guideCreatorHeadAddImage{
     font-size: .7em;
 }
 
-.saveButton{
-    background-color: white;
+
+.guideCreatorSection{
+    @extend #guideCreatorHead;
+    border-top: 3px solid black;
+}
+
+.addSectionButton{
+    background-color: rgb(210, 210, 210);
     font-size: 1em;
-    width: 50%;
+    width: 30%;
     text-align: center;
     border-radius: 7px;
     user-select: none;
-}
-.unsavedButton{
+    transition: ease-in-out .1s;
+    margin: 2% 0;
     cursor: pointer;
-    @extend .saveButton;
-    background-color: red;
-    color: white;
-    font-weight: bold;
 }
-.guideCreatorSection{
-    @extend #guideCreatorHead;
+.addSectionButton:hover{
+    background-color: white;
+}
+.guideSectionCreatorLabel{
+    @extend .guideCreatorLabel;
+    font-size: 1em;
 }

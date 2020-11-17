@@ -3,11 +3,24 @@ import React, { Component } from "react";
 import FileUpload from "../components/fileUpload";
 import CreateGuideSection from "../components/guideSectionCreator";
 import axios from "axios";
+import { session, getUsername } from "../components/Authentication";
+
+let user = "";
+session()
+  .then((val) => {
+    if (val) {
+      let { Value } = val.Attributes[2];
+      getUsername(Value).then((data) => {
+        user = data;
+      });
+    }
+  })
+  .catch((err) => console.log(err));
 
 class guideHead {
   constructor() {
     this.guideID = v4();
-    this.author = "";
+    this.author = user;
     this.title = "";
     this.description = "";
     this.image = "";
@@ -18,22 +31,30 @@ class guideHead {
 }
 
 class CreateGuide extends Component {
-    url = "http://localhost:8080/uploadGuideHead";
-  // url = "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/uploadGuideHead";
-
   state = {
     guideHead: new guideHead(),
     guideSections: [],
   };
+
+  url = "";
+  componentDidMount() {
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+      this.url = "http://localhost:8080/uploadGuideHead";
+    } else {
+      this.url =
+        "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/uploadGuideHead";
+    }
+    // console.log(this.url)
+  }
 
   onSaveGuide = () => {
     console.log(this.state.guideHead);
     let formData = new FormData();
     formData.append("file", JSON.stringify(this.state.guideHead));
     axios.post(this.url, formData).then((res) => {
-      let button = document.getElementById('saveHeadButton');
+      let button = document.getElementById("saveHeadButton");
       button.classList = "saveButton";
-      button.innerHTML = "Section Saved"
+      button.innerHTML = "Section Saved";
     });
   };
 
@@ -48,12 +69,11 @@ class CreateGuide extends Component {
     console.log(this.state.guideHead);
   };
 
-  onNotSaved = () =>{
-    let button = document.getElementById('saveHeadButton');
+  onNotSaved = () => {
+    let button = document.getElementById("saveHeadButton");
     button.classList = "unsavedButton";
-    button.innerHTML = "Save Changes"
-  }
-
+    button.innerHTML = "Save Changes";
+  };
 
   sectionIndex = 0;
   addSection = () => {
@@ -72,8 +92,9 @@ class CreateGuide extends Component {
   render() {
     return (
       <div id="guideCreator">
-        <div className="id">{this.state.guideHead.guideID}</div>
+        {/* <div className="id">{this.state.guideHead.guideID}</div> */}
         <div id="guideCreatorHead">
+          <div className="guideCreatorLabel">Add Title</div>
           <input
             type="text"
             className="guideCreatorHeadInput"
@@ -89,6 +110,7 @@ class CreateGuide extends Component {
               this.onNotSaved();
             }}
           ></input>
+          <div className="guideCreatorLabel">Add Description</div>
           <textarea
             type="text"
             className="guideCreatorHeadInput"
@@ -105,19 +127,25 @@ class CreateGuide extends Component {
             }}
           ></textarea>
           <div className="guideCreatorHeadAddImage">
-            <p>[Optional] Add Image</p>
-            <p></p>
+            <div className="guideCreatorLabel">[Optional] Add Image</div>
             <FileUpload handler={this.onAddHeadImg} />
           </div>
-        <div className="saveButton" id="saveHeadButton" onClick={this.onSaveGuide}>Section Saved</div>
-
+          <div
+            className="saveButton"
+            id="saveHeadButton"
+            onClick={this.onSaveGuide}
+          >
+            Section Saved
+          </div>
         </div>
         <div className="guideCreatorSections">
           {this.state.guideSections.map((section) => (
             <CreateGuideSection key={section.key} guideID={section.guideID} />
           ))}
         </div>
-        <button onClick={this.addSection}>Add Section</button>
+        <div className="addSectionButton" onClick={this.addSection}>
+          Add Section
+        </div>
       </div>
     );
   }

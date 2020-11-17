@@ -1,14 +1,51 @@
+$guideImgSize : 3;
 #guideHead{
     display: flex;
     flex-direction: column;
-    border: 1px solid black;
+    // border: 1px solid black;
     margin: 10px;
-    width: 100%;
+    width: 80vw;
     min-width: 50vw;
+    background-color: white;
+    padding: 2%;
 }
+#guideTitle{
+  font-weight: bold;
+  font-size: 2em;
+  margin: 1% 0;
+}
+#guideAuthor{
+  @extend #guideTitle;
+  font-size: 1em;
+}
+
+#guideHeadDesc{
+  margin: 1% 0;
+}
+#guideHeadImg{
+  overflow: hidden;
+  width: 16vw * $guideImgSize;
+  height: 9vw * $guideImgSize;
+  margin: 2% 0;
+}
+#guideHeadVideo{
+  @extend #guideHeadImg;
+}
+
+
 
 .guideSection{
     @extend #guideHead;
+}
+.guideSectionTitle{
+  @extend #guideTitle;
+  font-size: 1.5em;
+}
+.guideSectionImg{
+  @extend #guideHeadImg;
+}
+.guideSectionVideo{
+  @extend #guideHeadVideo;
 }
 
 .deleteButton {

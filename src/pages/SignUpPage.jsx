@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import LogInForm from '../components/loginForm'
+import SignUpForm from '../components/signUpForm'
 
 
-class LoginPage extends Component {
+class SignUpPage extends Component {
 
   state = {};
 
@@ -10,11 +10,11 @@ class LoginPage extends Component {
     return (
       <div id="loginPage">
         <div id="loginPageForm">
-            <LogInForm />
+            <SignUpForm />
         </div>
       </div>
     );
   }
 }
 
-export default LoginPage;
+export default SignUpPage;

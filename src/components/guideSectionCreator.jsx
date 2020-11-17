@@ -15,15 +15,19 @@ class guideSection {
 }
 
 class CreateGuideSection extends Component {
-  url = "http://localhost:8080/uploadGuideSection";
-  //   url = "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/uploadGuideHead";
-
+  url = "";
+  componentDidMount() {
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+      this.url = "http://localhost:8080/uploadGuideSection";
+    } else {
+      this.url =
+        "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/uploadGuideSection";
+    }
+  }
   state = {
     guideSection: new guideSection(this.props.guideID),
     submitID: v4(),
   };
-
-  componentDidMount() {}
 
   onSaveGuide = () => {
     console.log(this.state.guideSection);
@@ -56,7 +60,7 @@ class CreateGuideSection extends Component {
   render() {
     return (
       <div className="guideCreatorSection">
-        <div className="id">{this.props.guideID}</div>
+        <div className="guideSectionCreatorLabel">Add Section Title</div>
         <input
           type="text"
           className="guideCreatorSectionInput"
@@ -72,6 +76,7 @@ class CreateGuideSection extends Component {
             this.onNotSaved();
           }}
         ></input>
+        <div className="guideSectionCreatorLabel">Add Section Description</div>
         <textarea
           type="text"
           className="guideCreatorSectionInput"
@@ -88,9 +93,8 @@ class CreateGuideSection extends Component {
           }}
         ></textarea>
         <div className="guideCreatorSectionAddImage">
-          <p>[Optional] Add Image</p>
-          <p></p>
-          <FileUpload handler={this.onAddSectionImg} />
+          <div className="guideSectionCreatorLabel">[Optional] Add Image</div>
+          <FileUpload handler={this.onAddHeadImg} />
         </div>
         <div
           className="saveButton"

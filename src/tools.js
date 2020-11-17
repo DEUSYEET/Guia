@@ -14,7 +14,15 @@ exports.getVidID = url=> {
 }
 
 exports.deleteGuide = id =>{
-  let url = "http://localhost:8080/deleteGuide?guideId=" +id;
+  
+  let url = "";
+  if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+    url = "http://localhost:8080/deleteGuide?guideId=" +id;
+  } else {
+      url = 
+        "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/deleteGuide?guideId=" + id
+  }
+  
   fetch(url).then(res=>{
     console.log(res);
   })
