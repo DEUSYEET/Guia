@@ -67,7 +67,6 @@ class Guide extends Component {
           <div id="guideAuthor">{this.state.guideHead.author}</div>
           {this.state.user ? (
             <VoteButtons
-              type="guide"
               guide={this.state.guideHead}
               user={this.state.username}
             />

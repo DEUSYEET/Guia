@@ -129,6 +129,22 @@ class CreateGuide extends Component {
           <div className="guideCreatorHeadAddImage">
             <div className="guideCreatorLabel">[Optional] Add Image</div>
             <FileUpload handler={this.onAddHeadImg} />
+            <div className="guideCreatorLabel">[Optional] Add Video (takes place of image)</div>
+          <input
+            type="text"
+            className="guideCreatorHeadInput"
+            placeholder="Youtube URL"
+            onChange={(e) => {
+              let url = e.target.value;
+              this.setState((prevState) => ({
+                guideHead: {
+                  ...prevState.guideHead,
+                  video: url,
+                },
+              }));
+              this.onNotSaved();
+            }}
+          ></input>
           </div>
           <div
             className="saveButton"
