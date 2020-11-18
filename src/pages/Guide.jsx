@@ -41,8 +41,8 @@ class Guide extends Component {
         this.id;
     }
     // console.log(this.url)
-    this.getSections();
     // console.log(this.props.history)
+    this.getSections();
     session()
       .then((val) => {
         if (val) {
@@ -50,11 +50,9 @@ class Guide extends Component {
           getUsername(Value).then((data) => {
             this.setState({
               username: data,
+              user: true,
             });
             // console.log(this.state.username);
-          });
-          this.setState({
-            user: true,
           });
         }
       })
@@ -136,9 +134,11 @@ class Guide extends Component {
           ))}
         </div>
         <CommentBox
-          parentID={this.state.guideHead.guideID}
+          parentID={this.id}
           user={this.state.user}
           username={this.state.username}
+          hide={false}
+          submit={false}
         />
       </div>
     );

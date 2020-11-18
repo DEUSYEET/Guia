@@ -29,7 +29,7 @@ class Home extends Component {
         this.setState({
           guides: data,
         });
-        console.log(this.state.guides);
+        // console.log(this.state.guides);
       });
   }
 
@@ -42,7 +42,6 @@ class Home extends Component {
             .sort((a, b) => {
               let aScore = a.scoreUp - a.scoreDown;
               let bScore = b.scoreUp - b.scoreDown;
-              console.log(aScore - bScore);
               return bScore - aScore;
             })
             .map((guide) => (
