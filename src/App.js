@@ -6,6 +6,7 @@ import Guide from "./pages/Guide";
 import CreateGuide from "./pages/CreateGuide";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
+import EditGuide from "./pages/EditGuide";
 import { logout, session, getUsername } from "./components/Authentication";
 
 // import {
@@ -86,7 +87,10 @@ class App extends Component {
               path="/testUpload"
               render={(props) => <FileUpload {...props}></FileUpload>}
             ></Route> */}
-
+            <Route
+              path="/edit"
+              render={(props) => <EditGuide {...props} />}
+            ></Route>
             <Route
               path="/login"
               render={(props) => <LoginPage {...props}></LoginPage>}

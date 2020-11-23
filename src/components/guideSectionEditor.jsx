@@ -3,18 +3,12 @@ import FileUpload from "../components/fileUpload";
 import axios from "axios";
 import { v4 } from "uuid";
 
-class guideSection {
-  constructor(id) {
-    this.guideID = id;
-    this.sectionID = v4();
-    this.title = null;
-    this.description = null;
-    this.image = null;
-    this.video = null;
-  }
-}
+class EditGuideSection extends Component {
+    state = {
+      guideSection: this.props.section,
+      submitID: v4(),
+    };
 
-class CreateGuideSection extends Component {
   url = "";
   componentDidMount() {
     if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
@@ -23,11 +17,8 @@ class CreateGuideSection extends Component {
       this.url =
         "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/uploadGuideSection";
     }
+    console.log(this.state)
   }
-  state = {
-    guideSection: new guideSection(this.props.guideID),
-    submitID: v4(),
-  };
 
   onSaveGuide = () => {
     console.log(this.state.guideSection);
@@ -65,6 +56,7 @@ class CreateGuideSection extends Component {
           type="text"
           className="guideCreatorSectionInput"
           placeholder="Section Title"
+          value = {this.state.guideSection.title}
           onChange={(e) => {
             let title = e.target.value;
             this.setState((prevState) => ({
@@ -81,6 +73,7 @@ class CreateGuideSection extends Component {
           type="text"
           className="guideCreatorSectionInput"
           placeholder="Description"
+          value = {this.state.guideSection.description || ""}
           onChange={(e) => {
             let description = e.target.value;
             this.setState((prevState) => ({
@@ -108,6 +101,7 @@ class CreateGuideSection extends Component {
             type="text"
             className="guideCreatorSectionInput"
             placeholder="Youtube URL"
+          value = {this.state.guideSection.video || ""}
             onChange={(e) => {
               let url = e.target.value;
               this.setState((prevState) => ({
@@ -132,4 +126,4 @@ class CreateGuideSection extends Component {
     );
   }
 }
-export default CreateGuideSection;
+export default EditGuideSection;

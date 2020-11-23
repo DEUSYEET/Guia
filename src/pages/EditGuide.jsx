@@ -1,9 +1,9 @@
 import { v4 } from "uuid";
 import React, { Component } from "react";
 import FileUpload from "../components/fileUpload";
-import CreateGuideSection from "../components/guideSectionCreator";
 import axios from "axios";
 import { session, getUsername } from "../components/Authentication";
+import EditGuideSection from "../components/guideSectionEditor";
 
 let user = "";
 session()
@@ -30,30 +30,49 @@ class guideHead {
   }
 }
 
-
-class CreateGuide extends Component {
+class EditGuide extends Component {
   state = {
     guideHead: new guideHead(),
     guideSections: [],
   };
 
-  url = "";
+  id = new URLSearchParams(this.props.location.search).get("guideID");
+  saveUrl = "";
+  getUrl = "";
   componentDidMount() {
     if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
-      this.url = "http://localhost:8080/uploadGuideHead";
+      this.saveUrl = "http://localhost:8080/uploadGuideHead";
+      this.getUrl = "http://localhost:8080/getGuide?guideId=" + this.id;
     } else {
       this.url =
+        "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/getGuide?guideId=" +
+        this.id;
+      this.getUrl =
         "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/uploadGuideHead";
     }
-    // console.log(this.url)
 
+    this.getSections();
+  }
+
+  getSections() {
+    // console.log(this.url);
+    fetch(this.getUrl)
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log(data);
+        this.setState({
+          guideHead: data[0],
+          guideSections: data[1],
+        });
+        console.log(this.state);
+      });
   }
 
   onSaveGuide = () => {
     console.log(this.state.guideHead);
     let formData = new FormData();
     formData.append("file", JSON.stringify(this.state.guideHead));
-    axios.post(this.url, formData).then((res) => {
+    axios.post(this.saveUrl, formData).then((res) => {
       let button = document.getElementById("saveHeadButton");
       button.classList = "saveButton";
       button.innerHTML = "Section Saved";
@@ -101,8 +120,8 @@ class CreateGuide extends Component {
             type="text"
             className="guideCreatorHeadInput"
             placeholder="Title"
+            value={this.state.guideHead.title}
             onChange={(e) => {
-              console.log(this.state.guideHead.author);
               let title = e.target.value;
               this.setState((prevState) => ({
                 guideHead: {
@@ -118,6 +137,7 @@ class CreateGuide extends Component {
             type="text"
             className="guideCreatorHeadInput"
             placeholder="Description"
+            value={this.state.guideHead.description}
             onChange={(e) => {
               let description = e.target.value;
               this.setState((prevState) => ({
@@ -146,6 +166,7 @@ class CreateGuide extends Component {
               type="text"
               className="guideCreatorHeadInput"
               placeholder="Youtube URL"
+              value={this.state.guideHead.video}
               onChange={(e) => {
                 let url = e.target.value;
                 this.setState((prevState) => ({
@@ -168,7 +189,7 @@ class CreateGuide extends Component {
         </div>
         <div className="guideCreatorSections">
           {this.state.guideSections.map((section) => (
-            <CreateGuideSection key={section.key} guideID={section.guideID} />
+            <EditGuideSection key={section.sectionID || this.sectionIndex} section = {section}/>
           ))}
         </div>
         <div className="addSectionButton" onClick={this.addSection}>
@@ -178,4 +199,4 @@ class CreateGuide extends Component {
     );
   }
 }
-export default CreateGuide;
+export default EditGuide;

@@ -26,7 +26,9 @@ class CommentBox extends Component {
       this.deleteUrl = "http://localhost:8080/deleteComment";
       this.getCommentsUrl = "http://localhost:8080/getComments";
     } else {
-      // this.url = "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/uploadImage";
+      this.createCommentUrl = "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/uploadComment";
+      this.deleteUrl = "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/deleteComment";
+      this.getCommentsUrl = "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/getComments";
     }
     // console.log("mounting");
     this.updateComments();

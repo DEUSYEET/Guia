@@ -9,7 +9,6 @@
     "amazon-cognito-identity-js": "^4.5.3",
     "axios": "^0.21.0",
     "express": "^4.17.1",
-    "node-sass": "^4.14.1",
     "nodemon": "^2.0.6",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
@@ -40,5 +39,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "node-sass": "^4.0.0"
   }
 }

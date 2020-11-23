@@ -4,6 +4,7 @@ import DeleteButton from "../components/deleteButton";
 import VoteButtons from "../components/voteButtons";
 import CommentBox from "../components/CommentBox";
 import { session, getUsername } from "../components/Authentication";
+import { Link } from "react-router-dom";
 
 const tools = require("../tools");
 
@@ -88,7 +89,13 @@ class Guide extends Component {
           )}
           {this.state.user &&
           this.state.username === this.state.guideHead.author ? (
+            <div className="selfButtons">
             <DeleteButton id={this.id} />
+            <Link to={"/edit?guideID=" + this.id}>
+                <div className="editButton">Edit Guide</div>
+              </Link>
+            </div>
+            
           ) : (
             ""
           )}
