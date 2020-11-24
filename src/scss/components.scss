@@ -9,10 +9,18 @@
   cursor: pointer;
   display: flex;
   flex-direction: row;
+  // border: 2px solid #696969;
+  width: 10%;
 }
 .guideUpvote {
-  width: 5%;
+  width: 50%;
   padding: 0.5%;
+  transition: ease-in-out 100ms;
+}
+.guideUpvote:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+  font-weight: bold;
+  border-radius: 7px;
 }
 .guideDownvote {
   @extend .guideUpvote;
@@ -57,7 +65,7 @@
   width: 20%;
   height: inherit;
 }
-.biggerFont{
+.biggerFont {
   font-size: 2em;
 }
 .unsavedButton {

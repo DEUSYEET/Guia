@@ -48,12 +48,26 @@ $guideImgSize : 3;
   @extend #guideHeadVideo;
 }
 
+.selfButtons{
+  // border: 1px solid black;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
 .deleteButton {
     color: red;
     cursor: pointer;
+    margin: 0 10px;
+    // background-color:;
   }
   .deleteButton:hover {
     font-weight: bold;
     // text-decoration: underline;
   }
   
+  .editButton{
+    @extend .deleteButton;
+    color: rgb(0, 104, 0);
+  }

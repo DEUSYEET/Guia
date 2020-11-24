@@ -13,11 +13,26 @@ class Comment extends Component {
           ""
         ) : (
           <div className="commentInteractions">
+          {this.props.user?(
 
-          <CommentVoteButtons
-            comment={this.comment}
-            user={this.props.username}
-          />
+            <CommentVoteButtons
+              comment={this.comment}
+              user={this.props.username}
+            />
+          ): ( <div className="guideVoteButtons">
+              <div>
+                <span role="img" aria-label="up" className="up">
+                  👍
+                  {this.props.comment.scoreUp || 0}
+                </span>
+              </div>
+              <div>
+                <span role="img" aria-label="down" className="down">
+                  👎
+                  {this.props.comment.scoreDown || 0}
+                </span>
+              </div>
+            </div>)}
           </div>
         )}
         <CommentBox
@@ -25,6 +40,9 @@ class Comment extends Component {
           user={this.props.user}
           username={this.props.username}
           hide={true}
+          reply={true}
+          deleted = {this.comment.author === "[Deleted]"}
+          prompt="Leave a reply"
         />
       </div>
     );

@@ -64,6 +64,18 @@ class Guide extends Component {
     return (
       <div id="guide">
         <div id="guideHead">
+        {this.state.user &&
+          this.state.username === this.state.guideHead.author ? (
+            <div className="selfButtons">
+            <Link to={"/edit?guideID=" + this.id}>
+                <div className="editButton">Edit Guide</div>
+              </Link>
+            <DeleteButton id={this.id} />
+            </div>
+            
+          ) : (
+            ""
+          )}
           <div id="guideTitle">{this.state.guideHead.title}</div>
           <div id="guideAuthor">{this.state.guideHead.author}</div>
           {this.state.user ? (
@@ -87,18 +99,7 @@ class Guide extends Component {
               </div>
             </div>
           )}
-          {this.state.user &&
-          this.state.username === this.state.guideHead.author ? (
-            <div className="selfButtons">
-            <DeleteButton id={this.id} />
-            <Link to={"/edit?guideID=" + this.id}>
-                <div className="editButton">Edit Guide</div>
-              </Link>
-            </div>
-            
-          ) : (
-            ""
-          )}
+
           {!this.state.guideHead.image && this.state.guideHead.video && (
             <YouTube
               id="guideHeadVideo"
@@ -145,6 +146,7 @@ class Guide extends Component {
           username={this.state.username}
           hide={false}
           submit={false}
+          prompt="Leave a comment"
         />
       </div>
     );

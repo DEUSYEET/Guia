@@ -6,7 +6,7 @@
 @import "./scss/signin.scss";
 @import "./scss/comments.scss";
 html {
-  overflow-x: hidden;
+  // overflow-x: hidden;
   background-color: $backGroundGrey;
 }
 a {
@@ -38,4 +38,14 @@ a {
   background-color: $backGroundDarkGrey;
   display: flex;
   flex-direction: column;
+  position: fixed;
+}
+#mainContainer{
+  margin-left: 10%;
+}
+.signOutButton{
+  position: fixed;
+  margin: 2% 0;
+  padding: 2% 0;
+  bottom: 0;
 }

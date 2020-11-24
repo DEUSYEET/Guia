@@ -12,6 +12,7 @@ class CommentBox extends Component {
       comments: [],
       userComment: "",
       hide: this.props.hide,
+      confirmDelete: false,
     };
     this.onReply = this.onReply.bind(this);
     //   this.onDelete = this.onDelete.bind(this)
@@ -26,9 +27,12 @@ class CommentBox extends Component {
       this.deleteUrl = "http://localhost:8080/deleteComment";
       this.getCommentsUrl = "http://localhost:8080/getComments";
     } else {
-      this.createCommentUrl = "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/uploadComment";
-      this.deleteUrl = "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/deleteComment";
-      this.getCommentsUrl = "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/getComments";
+      this.createCommentUrl =
+        "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/uploadComment";
+      this.deleteUrl =
+        "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/deleteComment";
+      this.getCommentsUrl =
+        "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/getComments";
     }
     // console.log("mounting");
     this.updateComments();
@@ -59,20 +63,40 @@ class CommentBox extends Component {
   };
 
   onDelete = (e) => {
-    let formData = new FormData();
-    formData.append(
-      "file",
-      JSON.stringify({
-        parentID: this.props.parentID,
-        commentID: e.target.id,
-        author: "[Deleted]",
-        body: "[Deleted]",
-      })
-    );
-    axios.post(this.createCommentUrl, formData).then((res) => {
-    //   console.log("delete");
-      this.updateComments();
-    });
+    if (this.state.confirmDelete) {
+      let formData = new FormData();
+      formData.append(
+        "file",
+        JSON.stringify({
+          parentID: this.props.parentID,
+          commentID: e.target.id,
+          author: "[Deleted]",
+          body: "[Deleted]",
+          // scoreDown: -1000,
+        })
+      );
+      // console.log(this.props.permaDelete);
+      if (this.props.permaDelete) {
+        axios.post(this.deleteUrl, formData).then((res) => {
+          //   console.log("delete");
+          this.updateComments();
+        });
+      } else {
+        axios.post(this.createCommentUrl, formData).then((res) => {
+          //   console.log("delete");
+          this.updateComments();
+        });
+      }
+          this.setState({
+            confirmDelete : false
+          })
+    } else{
+        e.target.innerHTML = "Confirm Delete"
+        e.target.classList = "deleteComment confirm"
+        this.setState({
+          confirmDelete : true
+        })
+    }
   };
 
   updateComments = () => {
@@ -91,7 +115,7 @@ class CommentBox extends Component {
         },
         () => {
           this.setState({
-            comments: res.data,
+            comments: this.props.sortNew ? res.data.reverse() : res.data,
             hide: this.props.hide,
           });
         }
@@ -113,14 +137,14 @@ class CommentBox extends Component {
             <textarea
               onChange={this.onAddComment}
               className="commentTextArea"
-              placeholder="Leave a comment"
+              placeholder={this.props.prompt}
               id={this.state.boxID}
             />
             <div className="commentButton" onClick={this.uploadComment}>
               Submit
             </div>
           </div>
-        ) : (
+        ) : this.props.user && !this.props.deleted ? (
           <div
             className="replyButton"
             id={"reply" + this.state.boxID}
@@ -128,27 +152,50 @@ class CommentBox extends Component {
           >
             Reply
           </div>
+        ) : (
+          ""
         )}
-        <div className="comments">
-          {this.state.comments
-            .sort((a, b) => {
-              let aScore = a.scoreUp - a.scoreDown;
-              let bScore = b.scoreUp - b.scoreDown;
-              return bScore - aScore;
-            })
-            .map((comment) => (
-              <div key={comment._id}>
-                {this.props.username === comment.author?
-                <div
-                  className="deleteComment"
-                  id={comment.commentID}
-                  onClick={this.onDelete}
-                >[X]</div>
-                :
-                ""}
-                <Comment comment={comment} {...this.props} />
-              </div>
-            ))}
+        <div className={this.props.reply ? "comments replies" : "comments"}>
+          {this.props.sortNew
+            ? this.state.comments.map((comment) => (
+                <div key={comment._id} className="commentContainer">
+                  {this.props.username === comment.author ? (
+                    <div
+                      className="deleteComment"
+                      id={comment.commentID}
+                      onClick={this.onDelete}
+                    >
+                      [X]
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                  <Comment comment={comment} {...this.props} />
+                </div>
+              ))
+            : this.state.comments
+                .sort((a, b) => {
+                  let aScore = a.scoreUp - a.scoreDown;
+                  let bScore = b.scoreUp - b.scoreDown;
+                  console.log(bScore - aScore);
+                  return bScore - aScore;
+                })
+                .map((comment) => (
+                  <div key={comment._id} className="commentContainer">
+                    {this.props.username === comment.author ? (
+                      <div
+                        className="deleteComment"
+                        id={comment.commentID}
+                        onClick={this.onDelete}
+                      >
+                        [X]
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    <Comment comment={comment} {...this.props} />
+                  </div>
+                ))}
         </div>
       </div>
     );
