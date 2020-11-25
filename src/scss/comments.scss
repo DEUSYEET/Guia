@@ -19,6 +19,13 @@
     border-bottom: $border;
     // border: 2px solid #696969;
 }
+.commentHead{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 15%;
+    // border: 1px solid black;
+}
 .replies{
     border-left: 2px solid #696969;
 }
@@ -38,6 +45,7 @@
 }
 .commentAuthor{
     font-weight: bold;
+    // margin: auto;
 }
 .commentBody{
     background-color: rgba(255, 255, 255, 0.5);

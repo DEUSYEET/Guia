@@ -3,8 +3,9 @@ import YouTube from "react-youtube";
 import DeleteButton from "../components/deleteButton";
 import VoteButtons from "../components/voteButtons";
 import CommentBox from "../components/CommentBox";
-import { session, getUsername } from "../components/Authentication";
+import { session, getUserData } from "../components/Authentication";
 import { Link } from "react-router-dom";
+import ProfilePic from "../components/ProfilePic";
 
 const tools = require("../tools");
 
@@ -17,6 +18,7 @@ class Guide extends Component {
     guideSections: [],
     user: false,
     username: "",
+    image:"",
   };
 
   getSections() {
@@ -48,10 +50,11 @@ class Guide extends Component {
       .then((val) => {
         if (val) {
           let { Value } = val.Attributes[2];
-          getUsername(Value).then((data) => {
+          getUserData(Value).then((data) => {
             this.setState({
-              username: data,
+              username: data.username,
               user: true,
+              image:data.image
             });
             // console.log(this.state.username);
           });
@@ -64,20 +67,22 @@ class Guide extends Component {
     return (
       <div id="guide">
         <div id="guideHead">
-        {this.state.user &&
+          {this.state.user &&
           this.state.username === this.state.guideHead.author ? (
             <div className="selfButtons">
-            <Link to={"/edit?guideID=" + this.id}>
+              <Link to={"/edit?guideID=" + this.id}>
                 <div className="editButton">Edit Guide</div>
               </Link>
-            <DeleteButton id={this.id} />
+              <DeleteButton id={this.id} />
             </div>
-            
           ) : (
             ""
           )}
           <div id="guideTitle">{this.state.guideHead.title}</div>
-          <div id="guideAuthor">{this.state.guideHead.author}</div>
+          <div id="guideAuthor">
+            <ProfilePic username={this.state.guideHead.author} test={true} key={this.state.guideHead.author} />
+            {this.state.guideHead.author}
+          </div>
           {this.state.user ? (
             <VoteButtons
               guide={this.state.guideHead}

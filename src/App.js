@@ -9,6 +9,7 @@ import SignUpPage from "./pages/SignUpPage";
 import EditGuide from "./pages/EditGuide";
 import { logout, session, getUsername } from "./components/Authentication";
 import Board from "./pages/Board";
+import Profile from "./pages/Profile";
 
 // import {
 //   BrowserRouter as Router,
@@ -70,6 +71,9 @@ class App extends Component {
               <Link to="/board">
                 <div className="sidebarButton bold">Community Board</div>
               </Link>
+              <Link to="/profile">
+                <div className="sidebarButton bold">Profile</div>
+              </Link>
               <div className="sidebarButton signOutButton" onClick={logout}>
                 Sign Out
               </div>
@@ -91,6 +95,10 @@ class App extends Component {
               path="/testUpload"
               render={(props) => <FileUpload {...props}></FileUpload>}
             ></Route> */}
+            <Route
+              path="/profile"
+              render={(props) => <Profile {...props} />}
+            ></Route>
             <Route
               path="/board"
               render={(props) => <Board {...props} />}

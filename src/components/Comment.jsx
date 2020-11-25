@@ -1,13 +1,17 @@
 import React, { Component } from "react";
 import CommentBox from "../components/CommentBox";
 import CommentVoteButtons from "./commentVoteButtons";
+import ProfilePic from "./ProfilePic";
 
 class Comment extends Component {
   comment = this.props.comment;
   render() {
     return (
       <div className="comment">
+      <div className="commentHead">
+      <ProfilePic username={this.comment.author} />
         <div className="commentAuthor">{this.comment.author}</div>
+      </div>
         <div className="commentBody">{this.comment.body}</div>
         {this.comment.author === "[Deleted]" ? (
           ""

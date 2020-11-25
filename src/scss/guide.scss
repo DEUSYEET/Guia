@@ -17,6 +17,10 @@ $guideImgSize : 3;
 #guideAuthor{
   @extend #guideTitle;
   font-size: 1em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  
 }
 
 #guideHeadDesc{

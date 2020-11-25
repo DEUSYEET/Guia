@@ -88,4 +88,25 @@ const getUsername = async (email) =>
       .catch((err) => reject(err));
   });
 
-export { auth, session, logout, getUsername };
+const getUserData = async (email) =>
+  await new Promise((resolve, reject) => {
+    let url = "";
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+      url = "http://localhost:8080/getUser";
+    } else {
+      url =
+        "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/getUser";
+    }
+
+    let formData = new FormData();
+    formData.append("file", JSON.stringify({ email: email }));
+
+    axios
+      .post(url, formData)
+      .then((res) => {
+        resolve(res.data);
+      })
+      .catch((err) => reject(err));
+  });
+
+export { auth, session, logout, getUsername, getUserData };
