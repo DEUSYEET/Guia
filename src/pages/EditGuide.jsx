@@ -29,11 +29,22 @@ class guideHead {
     this.scoreDown = 0;
   }
 }
+class Section {
+  constructor() {
+    this.guideID = "";
+    this.sectionID = "";
+    this.title = "";
+    this.description = "";
+    this.image = "";
+    this.video = "";
+  }
+}
 
 class EditGuide extends Component {
   state = {
     guideHead: new guideHead(),
     guideSections: [],
+    unsaved: false,
   };
 
   id = new URLSearchParams(this.props.location.search).get("guideID");
@@ -52,6 +63,7 @@ class EditGuide extends Component {
     }
 
     this.getSections();
+    // console.log(this.state.guideSections);
   }
 
   getSections() {
@@ -64,18 +76,21 @@ class EditGuide extends Component {
           guideHead: data[0],
           guideSections: data[1],
         });
-        console.log(this.state);
+        // console.log(this.state.guideSections);
       });
   }
 
   onSaveGuide = () => {
-    console.log(this.state.guideHead);
+    // console.log(this.state.guideHead);
     let formData = new FormData();
     formData.append("file", JSON.stringify(this.state.guideHead));
     axios.post(this.saveUrl, formData).then((res) => {
       let button = document.getElementById("saveHeadButton");
       button.classList = "saveButton";
       button.innerHTML = "Section Saved";
+      this.setState({
+        unsaved: false,
+      });
     });
   };
 
@@ -87,27 +102,45 @@ class EditGuide extends Component {
       },
     }));
 
-    console.log(this.state.guideHead);
+    // console.log(this.state.guideHead);
   };
 
   onNotSaved = () => {
     let button = document.getElementById("saveHeadButton");
     button.classList = "unsavedButton";
     button.innerHTML = "Save Changes";
+    this.setState({
+      unsaved: true,
+    });
+    // console.log(this.state);
   };
 
-  sectionIndex = 0;
+  onSectionNotSaved = () => {
+    this.setState({
+      unsaved: true,
+    });
+  };
+  onSectionSaved = () => {
+    this.setState({
+      unsaved: false,
+    });
+    this.getSections();
+  };
+  sectionIndex = this.state.guideSections.length;
   addSection = () => {
-    this.setState((prevState) => ({
-      guideHead: {
-        ...prevState.guideHead,
-      },
-      guideSections: [
-        ...prevState.guideSections,
-        { key: this.sectionIndex, guideID: this.state.guideHead.guideID },
-      ],
-    }));
     this.sectionIndex++;
+    // console.log(this.sectionIndex);
+    this.setState(
+      (prevState) => ({
+        guideHead: {
+          ...prevState.guideHead,
+        },
+        guideSections: [...prevState.guideSections, new Section()],
+      }),
+      () => {
+        // console.log(this.state.guideSections);
+      }
+    );
   };
 
   render() {
@@ -151,13 +184,17 @@ class EditGuide extends Component {
           ></textarea>
           <div className="guideCreatorHeadAddImage">
             <div className="guideCreatorLabel">[Optional] Add Image</div>
-            {this.state.guideHead.image ? <img
-              className="guideCreatorHeadAddImagePreview"
-              src={this.state.guideHead.image}
-              width="100px"
-              height="100px"
-              alt="Preview"
-            ></img> : ""}
+            {this.state.guideHead.image ? (
+              <img
+                className="guideCreatorHeadAddImagePreview"
+                src={this.state.guideHead.image}
+                width="100px"
+                height="100px"
+                alt="Preview"
+              ></img>
+            ) : (
+              ""
+            )}
             <FileUpload handler={this.onAddHeadImg} />
             <div className="guideCreatorLabel">
               [Optional] Add Video (takes place of image)
@@ -189,12 +226,24 @@ class EditGuide extends Component {
         </div>
         <div className="guideCreatorSections">
           {this.state.guideSections.map((section) => (
-            <EditGuideSection key={section.sectionID || this.sectionIndex} section = {section}/>
+            <EditGuideSection
+              key={section.sectionID ? section.sectionID : this.sectionIndex}
+              section={section}
+              guideID={this.id}
+              unsaved={this.onSectionNotSaved}
+              saved={this.onSectionSaved}
+            />
           ))}
         </div>
-        <div className="addSectionButton" onClick={this.addSection}>
-          Add Section
-        </div>
+        {this.state.unsaved ? (
+          <div className="addSectionButton">
+            Save other sections to add more
+          </div>
+        ) : (
+          <div className="addSectionButton" onClick={this.addSection}>
+            Add Section
+          </div>
+        )}
       </div>
     );
   }

@@ -1,6 +1,6 @@
 import "./App.scss";
 import React, { Component } from "react";
-import { Link, Route, Switch } from "react-router-dom";
+import { Link, Route, Switch, withRouter } from "react-router-dom";
 import Home from "./pages/Home.jsx";
 import Guide from "./pages/Guide";
 import CreateGuide from "./pages/CreateGuide";
@@ -19,10 +19,15 @@ import Profile from "./pages/Profile";
 // } from "react-router-dom";
 
 class App extends Component {
-  state = {
-    user: false,
-  };
-
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: false,
+      username: "",
+      searchValue: "",
+    };
+    this.onSearch = this.onSearch.bind(this);
+  }
   hide(e) {
     this.setState({
       homeLinks: true,
@@ -47,6 +52,9 @@ class App extends Component {
           let { Value } = val.Attributes[2];
           getUsername(Value).then((data) => {
             // console.log(data);
+            this.setState({
+              username: data,
+            });
           });
           this.setState({
             user: true,
@@ -54,8 +62,20 @@ class App extends Component {
         }
       })
       .catch((err) => console.log(err));
+
+    // console.log(this.props.location);
   }
 
+  onSearch(e) {
+    this.setState(
+      {
+        searchValue: e.target.value,
+      },
+      () => {
+        // console.log("App       ----->",this.state.searchValue);
+      }
+    );
+  }
   render() {
     return (
       <div id="container">
@@ -63,6 +83,20 @@ class App extends Component {
           <Link to="/">
             <img src="./assets/GuiaLogo1.svg" alt="Logo" id="mainLogo"></img>
           </Link>
+          {/* <div> */}
+          {this.props.location.pathname === "/" 
+          //|| this.props.location.pathname === "/board"
+          ? (
+            <input
+              id="searchBar"
+              type="text"
+              onChange={this.onSearch}
+              placeholder="Search"
+            ></input>
+          ) : (
+            ""
+          )}
+          {/* </div> */}
           {this.state.user ? (
             <div className="signedInButtons">
               <Link to="/createGuide">
@@ -71,7 +105,7 @@ class App extends Component {
               <Link to="/board">
                 <div className="sidebarButton bold">Community Board</div>
               </Link>
-              <Link to="/profile">
+              <Link to={"/profile?user=" + this.state.username}>
                 <div className="sidebarButton bold">Profile</div>
               </Link>
               <div className="sidebarButton signOutButton" onClick={logout}>
@@ -99,10 +133,7 @@ class App extends Component {
               path="/profile"
               render={(props) => <Profile {...props} />}
             ></Route>
-            <Route
-              path="/board"
-              render={(props) => <Board {...props} />}
-            ></Route>
+
             <Route
               path="/edit"
               render={(props) => <EditGuide {...props} />}
@@ -123,11 +154,21 @@ class App extends Component {
               path="/guide"
               render={(props) => <Guide {...props}></Guide>}
             ></Route>
+            <Route
+              path="/board"
+              render={(props) => (
+                <Board {...props} searchValue={this.state.searchValue}/>
+              )}
+            ></Route>
 
             <Route
               path="/"
               render={(props) => (
-                <Home {...props} Hide={(e) => this.hide(e)}></Home>
+                <Home
+                  {...props}
+                  searchValue={this.state.searchValue}
+                  Hide={(e) => this.hide(e)}
+                ></Home>
               )}
             ></Route>
           </Switch>
@@ -137,4 +178,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withRouter(App);

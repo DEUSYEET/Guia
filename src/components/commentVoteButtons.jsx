@@ -29,7 +29,7 @@ class CommentVoteButtons extends Component {
     // console.log(vote);
     formData.append("file", JSON.stringify(vote));
     axios.post(this.url, formData).then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
       this.setState({
         comment: res.data,
         scoreUp: res.data.scoreUp,

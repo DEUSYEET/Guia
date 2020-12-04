@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import Comment from "./Comment";
 import axios from "axios";
 import { v4 } from "uuid";
+import { session } from "./Authentication";
+
+const cancelToken = axios.CancelToken;
+const source = cancelToken.source();
 
 class CommentBox extends Component {
   constructor(props) {
@@ -13,6 +17,8 @@ class CommentBox extends Component {
       userComment: "",
       hide: this.props.hide,
       confirmDelete: false,
+      searchValue: "",
+      userToken: "",
     };
     this.onReply = this.onReply.bind(this);
     //   this.onDelete = this.onDelete.bind(this)
@@ -36,8 +42,27 @@ class CommentBox extends Component {
     }
     // console.log("mounting");
     this.updateComments();
+    if (this.props.permaDelete) {
+      // console.log("Box      ----->", this.props.searchValue);
+      this.setState({
+        searchValue: this.props.searchValue ? this.props.searchValue : "",
+      });
+    }
+    session()
+      .then((val) => {
+        if (val) {
+          let  token  = val.Session.idToken;
+          this.setState({
+            userToken: token,
+          });
+        }
+      })
+      .catch((err) => console.log(err));
   }
 
+  componentWillUnmount() {
+    // source.cancel();
+  }
   onAddComment = (e) => {
     let content = e.target.value;
     this.setState({
@@ -56,10 +81,14 @@ class CommentBox extends Component {
         body: this.state.userComment,
       })
     );
-    axios.post(this.createCommentUrl, formData).then((res) => {
-      this.updateComments();
-      document.getElementById(this.state.boxID).value = "";
-    });
+    axios
+      .post(this.createCommentUrl, formData, {
+        cancelToken: source.token,
+      })
+      .then((res) => {
+        this.updateComments();
+        document.getElementById(this.state.boxID).value = "";
+      });
   };
 
   onDelete = (e) => {
@@ -72,30 +101,39 @@ class CommentBox extends Component {
           commentID: e.target.id,
           author: "[Deleted]",
           body: "[Deleted]",
+          token:this.state.userToken.jwtToken,
           // scoreDown: -1000,
         })
       );
       // console.log(this.props.permaDelete);
       if (this.props.permaDelete) {
-        axios.post(this.deleteUrl, formData).then((res) => {
-          //   console.log("delete");
-          this.updateComments();
-        });
-      } else {
-        axios.post(this.createCommentUrl, formData).then((res) => {
-          //   console.log("delete");
-          this.updateComments();
-        });
-      }
-          this.setState({
-            confirmDelete : false
+        axios
+          .post(this.deleteUrl, formData, {
+            cancelToken: source.token,
           })
-    } else{
-        e.target.innerHTML = "Confirm Delete"
-        e.target.classList = "deleteComment confirm"
-        this.setState({
-          confirmDelete : true
-        })
+          .then((res) => {
+            //   console.log("delete");
+            this.updateComments();
+          });
+      } else {
+        axios
+          .post(this.createCommentUrl, formData, {
+            cancelToken: source.token,
+          })
+          .then((res) => {
+            //   console.log("delete");
+            this.updateComments();
+          });
+      }
+      this.setState({
+        confirmDelete: false,
+      });
+    } else {
+      e.target.innerHTML = "Confirm Delete";
+      e.target.classList = "deleteComment confirm";
+      this.setState({
+        confirmDelete: true,
+      });
     }
   };
 
@@ -107,20 +145,25 @@ class CommentBox extends Component {
         parentID: this.props.parentID,
       })
     );
-    axios.post(this.getCommentsUrl, formData).then((res) => {
-      this.setState(
-        {
-          comments: [],
-          hide: this.props.hide,
-        },
-        () => {
-          this.setState({
-            comments: this.props.sortNew ? res.data.reverse() : res.data,
+    axios
+      .post(this.getCommentsUrl, formData, {
+        cancelToken: source.token,
+      })
+      .then((res) => {
+        this.setState(
+          {
+            comments: [],
             hide: this.props.hide,
-          });
-        }
-      );
-    });
+          },
+          () => {
+            this.setState({
+              comments: this.props.sortNew ? res.data.reverse() : res.data,
+              hide: this.props.hide,
+            });
+          }
+        );
+      })
+      .catch((err) => {});
   };
 
   onReply() {
@@ -165,7 +208,7 @@ class CommentBox extends Component {
                       id={comment.commentID}
                       onClick={this.onDelete}
                     >
-                      [X]
+                      ✖
                     </div>
                   ) : (
                     ""
@@ -174,10 +217,14 @@ class CommentBox extends Component {
                 </div>
               ))
             : this.state.comments
+                .filter((comment) => {
+                  return comment.body
+                    .toLowerCase()
+                    .includes(this.state.searchValue.toLowerCase().trim());
+                })
                 .sort((a, b) => {
                   let aScore = a.scoreUp - a.scoreDown;
                   let bScore = b.scoreUp - b.scoreDown;
-                  console.log(bScore - aScore);
                   return bScore - aScore;
                 })
                 .map((comment) => (
@@ -188,7 +235,7 @@ class CommentBox extends Component {
                         id={comment.commentID}
                         onClick={this.onDelete}
                       >
-                        [X]
+                        ✖
                       </div>
                     ) : (
                       ""

@@ -1,7 +1,14 @@
 import React, { Component } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 // import { Link } from "react-router-dom";
 // import { session, getUserData } from "../components/Authentication";
+const cancelToken = axios.CancelToken;
+const source = cancelToken.source();
+
+
+// const 
+
 
 class ProfilePic extends Component {
   url = "";
@@ -16,22 +23,30 @@ class ProfilePic extends Component {
         "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/getUserImage";
     }
     this.getImage();
-    if(this.props.test){
-        console.log(this.props.username)
+    if (this.props.test) {
+      // console.log(this.props.username);
     }
+  }
+
+  componentWillUnmount() {
+    // source.cancel();
   }
 
   getImage = () => {
     if (this.props.username) {
       let formData = new FormData();
       formData.append("file", JSON.stringify(this.props.username));
-      axios.post(this.url, formData).then((res) => {
-        this.setState({
-          image: res.data
-            ? res.data.image
-            : "https://guia-images.s3-us-west-1.amazonaws.com/Full-Green-Tree-984x1024.png",
+      axios
+        .post(this.url, formData, {
+          cancelToken: source.token,
+        })
+        .then((res) => {
+          this.setState({
+            image: res.data
+              ? res.data.image
+              : "https://guia-images.s3-us-west-1.amazonaws.com/Full-Green-Tree-984x1024.png",
+          });
         });
-      });
     }
   };
 
@@ -39,18 +54,28 @@ class ProfilePic extends Component {
     "https://guia-images.s3-us-west-1.amazonaws.com/Full-Green-Tree-984x1024.png";
 
   render() {
-    return (
-      // <div onClick={this.getImage}>{this.props.username}</div>
-      //   <Link to="/profile">
-      <div id="profilePic">
+    return this.props.username !== "[Deleted]" ? (
+      <Link to={"/profile?user=" + this.props.username}>
+        <div className="profilePic">
+          <img
+            src={this.state.image || this.defaultImage}
+            className="userImage"
+            alt={this.props.username}
+            onClick={this.getImage}
+          ></img>
+          <div className="profilePicUsername">{this.props.username}</div>
+        </div>
+      </Link>
+    ) : (
+      <div className="profilePic">
         <img
           src={this.state.image || this.defaultImage}
           className="userImage"
           alt={this.props.username}
           onClick={this.getImage}
         ></img>
+        <div className="profilePicUsername">{this.props.username}</div>
       </div>
-      //   </Link>
     );
   }
 }

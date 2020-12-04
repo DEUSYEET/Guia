@@ -30,7 +30,6 @@ class guideHead {
   }
 }
 
-
 class CreateGuide extends Component {
   state = {
     guideHead: new guideHead(),
@@ -46,17 +45,18 @@ class CreateGuide extends Component {
         "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/uploadGuideHead";
     }
     // console.log(this.url)
-
   }
 
   onSaveGuide = () => {
-    console.log(this.state.guideHead);
+    // console.log(this.state.guideHead);
     let formData = new FormData();
     formData.append("file", JSON.stringify(this.state.guideHead));
     axios.post(this.url, formData).then((res) => {
       let button = document.getElementById("saveHeadButton");
       button.classList = "saveButton";
       button.innerHTML = "Section Saved";
+      document.getElementById("addSectionButtonHead").style.display = "block";
+      document.getElementById("saveToolTip").style.display = "none";
     });
   };
 
@@ -68,7 +68,7 @@ class CreateGuide extends Component {
       },
     }));
 
-    console.log(this.state.guideHead);
+    // console.log(this.state.guideHead);
   };
 
   onNotSaved = () => {
@@ -102,7 +102,7 @@ class CreateGuide extends Component {
             className="guideCreatorHeadInput"
             placeholder="Title"
             onChange={(e) => {
-              console.log(this.state.guideHead.author);
+              // console.log(this.state.guideHead.author);
               let title = e.target.value;
               this.setState((prevState) => ({
                 guideHead: {
@@ -131,13 +131,17 @@ class CreateGuide extends Component {
           ></textarea>
           <div className="guideCreatorHeadAddImage">
             <div className="guideCreatorLabel">[Optional] Add Image</div>
-            {this.state.guideHead.image ? <img
-              className="guideCreatorHeadAddImagePreview"
-              src={this.state.guideHead.image}
-              width="100px"
-              height="100px"
-              alt="Preview"
-            ></img> : ""}
+            {this.state.guideHead.image ? (
+              <img
+                className="guideCreatorHeadAddImagePreview"
+                src={this.state.guideHead.image}
+                width="100px"
+                height="100px"
+                alt="Preview"
+              ></img>
+            ) : (
+              ""
+            )}
             <FileUpload handler={this.onAddHeadImg} />
             <div className="guideCreatorLabel">
               [Optional] Add Video (takes place of image)
@@ -171,9 +175,15 @@ class CreateGuide extends Component {
             <CreateGuideSection key={section.key} guideID={section.guideID} />
           ))}
         </div>
-        <div className="addSectionButton" onClick={this.addSection}>
+        <div
+          className="addSectionButton"
+          id="addSectionButtonHead"
+          onClick={this.addSection}
+          style={{ display: "none" }}
+        >
           Add Section
         </div>
+        <div id="saveToolTip">Save head section to add more</div>
       </div>
     );
   }

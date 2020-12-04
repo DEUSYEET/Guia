@@ -10,7 +10,6 @@ class Comment extends Component {
       <div className="comment">
       <div className="commentHead">
       <ProfilePic username={this.comment.author} />
-        <div className="commentAuthor">{this.comment.author}</div>
       </div>
         <div className="commentBody">{this.comment.body}</div>
         {this.comment.author === "[Deleted]" ? (

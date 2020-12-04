@@ -5,6 +5,7 @@
     margin: 10px;
     width: 100%;
     min-width: 50vw;
+    // min-height: 70vh;
 }
 
 .guideCreatorLabel{
@@ -44,4 +45,25 @@
 .guideSectionCreatorLabel{
     @extend .guideCreatorLabel;
     font-size: 1em;
+}
+.deleteSection{
+    // border: 2px solid #696969;
+    font-size: 1.5em;
+    width: 5%;
+    transition: ease-in-out 100ms;
+    text-align: center;
+}
+.deleteSection:hover{
+    cursor: pointer;
+    background-color: red;
+    color: white;
+}
+
+#saveToolTip{
+    margin: 10px;
+    padding: 10px;
+    font-weight: bold;
+    border: 1px solid red;
+    border-radius: 7px;
+    
 }

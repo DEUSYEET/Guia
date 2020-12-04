@@ -3,11 +3,11 @@ import YouTube from "react-youtube";
 import DeleteButton from "../components/deleteButton";
 import VoteButtons from "../components/voteButtons";
 import CommentBox from "../components/CommentBox";
-import { session, getUserData } from "../components/Authentication";
+import { session, getUserDataFromEmail } from "../components/Authentication";
 import { Link } from "react-router-dom";
 import ProfilePic from "../components/ProfilePic";
+import { getVidID } from "../tools";
 
-const tools = require("../tools");
 
 class Guide extends Component {
   id = new URLSearchParams(this.props.location.search).get("guideID");
@@ -19,7 +19,10 @@ class Guide extends Component {
     user: false,
     username: "",
     image:"",
+    userToken: "",
   };
+
+
 
   getSections() {
     // console.log(this.url);
@@ -50,11 +53,13 @@ class Guide extends Component {
       .then((val) => {
         if (val) {
           let { Value } = val.Attributes[2];
-          getUserData(Value).then((data) => {
+          let  token  = val.Session.idToken;
+          getUserDataFromEmail(Value).then((data) => {
             this.setState({
               username: data.username,
               user: true,
-              image:data.image
+              image:data.image,
+              userToken: token,
             });
             // console.log(this.state.username);
           });
@@ -73,7 +78,8 @@ class Guide extends Component {
               <Link to={"/edit?guideID=" + this.id}>
                 <div className="editButton">Edit Guide</div>
               </Link>
-              <DeleteButton id={this.id} />
+              
+              <DeleteButton id={this.id} token={this.state.userToken} />
             </div>
           ) : (
             ""
@@ -81,7 +87,6 @@ class Guide extends Component {
           <div id="guideTitle">{this.state.guideHead.title}</div>
           <div id="guideAuthor">
             <ProfilePic username={this.state.guideHead.author} test={true} key={this.state.guideHead.author} />
-            {this.state.guideHead.author}
           </div>
           {this.state.user ? (
             <VoteButtons
@@ -108,7 +113,7 @@ class Guide extends Component {
           {!this.state.guideHead.image && this.state.guideHead.video && (
             <YouTube
               id="guideHeadVideo"
-              videoId={tools.getVidID(this.state.guideHead.video)}
+              videoId={getVidID(this.state.guideHead.video)}
             ></YouTube>
           )}
           {this.state.guideHead.image && (
@@ -130,7 +135,7 @@ class Guide extends Component {
               {!section.image && section.video && (
                 <YouTube
                   className="guideSectionVideo"
-                  videoId={tools.getVidID(section.video)}
+                  videoId={getVidID(section.video)}
                 ></YouTube>
               )}
               {section.image && (

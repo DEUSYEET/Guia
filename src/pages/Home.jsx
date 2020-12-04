@@ -3,10 +3,12 @@ import { Link } from "react-router-dom";
 import GuidePreview from "../components/guidePreview";
 
 class Home extends Component {
-  state = {
-    guides: [],
-  };
-
+  constructor(props) {
+    super(props);
+    this.state = {
+      guides: [],
+    };
+  }
   url = "";
 
   componentDidMount() {
@@ -16,7 +18,6 @@ class Home extends Component {
       this.url =
         "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/getAll";
     }
-    // console.log("Mounted")
     this.getAll();
   }
 
@@ -33,16 +34,22 @@ class Home extends Component {
       });
   }
 
+
   render() {
     return (
       <div id="homePage">
-        <div id="homeTitle">Featured Guides</div>
+
         <div id="homeGuideContainer">
           {this.state.guides
             .sort((a, b) => {
               let aScore = a.scoreUp - a.scoreDown;
               let bScore = b.scoreUp - b.scoreDown;
               return bScore - aScore;
+            })
+            .filter((guide) => {
+              return guide.title
+                .toLowerCase()
+                .includes(this.props.searchValue.toLowerCase().trim());
             })
             .map((guide) => (
               <Link to={"/guide?guideID=" + guide.guideID} key={guide.guideID}>

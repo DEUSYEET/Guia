@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-const tools = require("../tools");
+import { getVidID } from "../tools";
+
 
 class GuidePreview extends Component {
   guide = this.props.guide;
   url = this.guide.video;
-  videoThumbnail = (this.url ? ("https://img.youtube.com/vi/" + tools.getVidID(this.url) + "/0.jpg") : "");
+  videoThumbnail = (this.url ? ("https://img.youtube.com/vi/" + getVidID(this.url) + "/0.jpg") : "");
 
     
 

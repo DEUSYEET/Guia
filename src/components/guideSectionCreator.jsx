@@ -30,7 +30,7 @@ class CreateGuideSection extends Component {
   };
 
   onSaveGuide = () => {
-    console.log(this.state.guideSection);
+    // console.log(this.state.guideSection);
     let formData = new FormData();
     formData.append("file", JSON.stringify(this.state.guideSection));
     axios.post(this.url, formData).then((res) => {
@@ -48,7 +48,7 @@ class CreateGuideSection extends Component {
       },
     }));
 
-    console.log(this.state.guideSection);
+    // console.log(this.state.guideSection);
   };
 
   onNotSaved = () => {

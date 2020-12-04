@@ -25,11 +25,13 @@ $guideImgSize : 3;
 
 #guideHeadDesc{
   margin: 1% 0;
+  white-space: pre-wrap;
 }
 #guideHeadImg{
   overflow: hidden;
-  width: 16vw * $guideImgSize;
-  height: 9vw * $guideImgSize;
+  max-width: 16vw * $guideImgSize;
+  // max-height: 9vw * $guideImgSize;
+  // max-height: 50vh;
   margin: 2% 0;
 }
 #guideHeadVideo{
@@ -51,9 +53,13 @@ $guideImgSize : 3;
 .guideSectionVideo{
   @extend #guideHeadVideo;
 }
+.guideSectionDesc{
+  @extend #guideHeadDesc;
+}
 
 .selfButtons{
   // border: 1px solid black;
+  height: 40px;
   display: flex;
   flex-direction: row;
   align-items: flex-end;
@@ -62,16 +68,20 @@ $guideImgSize : 3;
 
 .deleteButton {
     color: red;
+    border: 2px solid red;
     cursor: pointer;
-    margin: 0 10px;
-    // background-color:;
+    padding: 5px;
+    margin: 0 5px;
+    transition: ease-in-out 100ms;
   }
   .deleteButton:hover {
     font-weight: bold;
+    // border-width: 4px;
     // text-decoration: underline;
   }
   
   .editButton{
     @extend .deleteButton;
     color: rgb(0, 104, 0);
+    border: 2px solid rgb(0, 104, 0);
   }

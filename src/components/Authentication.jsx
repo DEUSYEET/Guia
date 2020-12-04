@@ -3,7 +3,6 @@ import {
   AuthenticationDetails,
   CognitoUserPool,
 } from "amazon-cognito-identity-js";
-
 import axios from "axios";
 
 const pool = new CognitoUserPool({
@@ -88,7 +87,7 @@ const getUsername = async (email) =>
       .catch((err) => reject(err));
   });
 
-const getUserData = async (email) =>
+const getUserDataFromEmail = async (email) =>
   await new Promise((resolve, reject) => {
     let url = "";
     if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
@@ -109,4 +108,32 @@ const getUserData = async (email) =>
       .catch((err) => reject(err));
   });
 
-export { auth, session, logout, getUsername, getUserData };
+const getUserDataFromUsername = async (username) =>
+  await new Promise((resolve, reject) => {
+    let url = "";
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+      url = "http://localhost:8080/getUserFromName";
+    } else {
+      url =
+        "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/getUserFromName";
+    }
+
+    let formData = new FormData();
+    formData.append("file", JSON.stringify({ username: username }));
+
+    axios
+      .post(url, formData)
+      .then((res) => {
+        resolve(res.data);
+      })
+      .catch((err) => reject(err));
+  });
+
+export {
+  auth,
+  session,
+  logout,
+  getUsername,
+  getUserDataFromEmail,
+  getUserDataFromUsername,
+};

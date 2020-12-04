@@ -5,15 +5,15 @@ import axios from "axios";
 // const tools = require("../tools");
 
 class SignUpForm extends Component {
-  url="";
-  componentDidMount(){
-    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+  url = "";
+  componentDidMount() {
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
       this.url = "http://localhost:8080/createUser";
-      } else {
-        this.url = "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/createUser";
-      }
+    } else {
+      this.url =
+        "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/createUser";
+    }
   }
-
 
   userPool = new CognitoUserPool({
     UserPoolId: "us-east-2_r9mOSgn28",
@@ -25,10 +25,14 @@ class SignUpForm extends Component {
     username: "",
     password: "",
     invalid: false,
+    loading: false,
   };
 
   onSubmit = (e) => {
     e.preventDefault();
+    this.setState({
+      loading: true,
+    });
     this.userPool.signUp(
       this.state.username,
       this.state.password,
@@ -41,19 +45,22 @@ class SignUpForm extends Component {
       null,
       (err, data) => {
         if (err) {
-          // invalid = true;
-          console.error(err);
+          // console.log(err.message);
+          document.getElementById("errorLabel").innerHTML = "Invalid email, username, or password";
+          document.getElementById("errorLabelSubscript").innerHTML = err.message;
+          this.setState({
+            loading: false,
+          });
         } else {
           // invalid = false;
-
           let user = {
-            username:this.state.username,
-            email:this.state.email
-          }
+            username: this.state.username,
+            email: this.state.email,
+          };
           let formData = new FormData();
           formData.append("file", JSON.stringify(user));
           axios.post(this.url, formData).then((res) => {
-            console.log(data);
+            // console.log(data);
             window.location.href = "/";
           });
         }
@@ -64,12 +71,10 @@ class SignUpForm extends Component {
   render() {
     return (
       <div id="signUpForm">
-       <div id="signInHead">
-        Log In
-      </div>
-      <div className="signInLabel">
-        Email
-      </div>
+        <div id="signInHead">Log In</div>
+        <div className="errorLabel" id="errorLabel"></div>
+        <div className="errorLabelSubscript" id="errorLabelSubscript"></div>
+        <div className="signInLabel">Email</div>
         <input
           type="email"
           className="signUpFormInput"
@@ -82,9 +87,7 @@ class SignUpForm extends Component {
             }));
           }}
         ></input>
-         <div className="signInLabel">
-        Username
-      </div>
+        <div className="signInLabel">Username</div>
         <input
           type="text"
           className="signUpFormInput"
@@ -97,9 +100,7 @@ class SignUpForm extends Component {
             }));
           }}
         ></input>
-         <div className="signInLabel">
-        Password
-      </div>
+        <div className="signInLabel">Password</div>
         <input
           type="password"
           className="signUpFormInput"
@@ -112,7 +113,17 @@ class SignUpForm extends Component {
             }));
           }}
         ></input>
-        <div id="submitButton" onClick={this.onSubmit}>Submit</div>
+        {this.state.loading ? (
+          <img
+            src="./assets/loading.gif"
+            alt="Loading"
+            className="loadingGif"
+          ></img>
+        ) : (
+          <div id="submitButton" onClick={this.onSubmit}>
+            Submit
+          </div>
+        )}
       </div>
     );
   }

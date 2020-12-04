@@ -3,7 +3,7 @@
   flex-direction: column;
   // background-color: white;
   width: 40vw;
-  height: 80vh;
+  height: 100vh;
   // font-size: 2em;
   padding: 2%;
 }
@@ -16,6 +16,12 @@
   margin: 1% 0;
   font-weight: bold;
 }
+.errorLabel {
+  color: red;
+}
+.errorLabelSubscript {
+  font-size: .7em;
+}
 .signUpFormInput {
   margin: 1% 0 3% 0;
   font-size: 1em;
@@ -27,7 +33,7 @@
   width: 10%;
   text-align: center;
   border: 3px solid rgb(197, 197, 197);
-  transition: ease-in-out .05s;
+  transition: ease-in-out 0.05s;
 }
 #submitButton:hover {
   border: 3px solid rgb(190, 155, 155);
