@@ -6,21 +6,26 @@
 }
 
 .guideVoteButtons {
-  cursor: pointer;
   display: flex;
   flex-direction: row;
   // border: 2px solid #696969;
   width: 10%;
 }
 .guideUpvote {
-  width: 50%;
-  padding: 0.5%;
-  transition: ease-in-out 100ms;
+  width: 40%;
 }
-.guideUpvote:hover {
-  background-color: rgba(255, 255, 255, 0.5);
+.up{
+  cursor: pointer;
+  padding: 5%;
+  transition: ease-in-out 70ms;
+}
+.up:hover {
+  // background-color: rgba(255, 255, 255, 0.5);
   font-weight: bold;
-  border-radius: 7px;
+  // border-radius: 7px;
+}
+.down {
+  @extend .up
 }
 .guideDownvote {
   @extend .guideUpvote;
@@ -38,6 +43,17 @@
   transition: ease-in-out 0.1s;
   cursor: pointer;
 }
+
+.profileButton{
+  img{
+    width: 40px;
+    height: 40px;
+  }
+  margin-bottom: 10%;
+  // background-color: rgba(238, 238, 238, 0.507);
+  // width: 100%;
+}
+
 .bold {
   font-weight: bold;
 }

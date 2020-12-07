@@ -6,6 +6,10 @@ class SignUpPage extends Component {
 
   state = {};
 
+  componentDidMount(){
+    document.title = "Sign Up"
+  }
+
   render() {
     return (
       <div id="loginPage">

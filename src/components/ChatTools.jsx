@@ -43,6 +43,7 @@ const ChatTools = (roomID, currentUser) => {
         return () =>{
             ref.current.disconnect();
         }
+         // eslint-disable-next-line
     }, [roomID, currentUser])
     const send = (message) =>{
         ref.current.emit("newChatMessage",{

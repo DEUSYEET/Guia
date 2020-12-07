@@ -8,7 +8,6 @@ import { Link } from "react-router-dom";
 import ProfilePic from "../components/ProfilePic";
 import { getVidID } from "../tools";
 
-
 class Guide extends Component {
   id = new URLSearchParams(this.props.location.search).get("guideID");
   url = "";
@@ -18,11 +17,10 @@ class Guide extends Component {
     guideSections: [],
     user: false,
     username: "",
-    image:"",
+    image: "",
     userToken: "",
+    references: [],
   };
-
-
 
   getSections() {
     // console.log(this.url);
@@ -34,6 +32,7 @@ class Guide extends Component {
           guideHead: data[0],
           guideSections: data[1],
         });
+        document.title = this.state.guideHead.title;
         // console.log(this.state);
       });
   }
@@ -53,12 +52,12 @@ class Guide extends Component {
       .then((val) => {
         if (val) {
           let { Value } = val.Attributes[2];
-          let  token  = val.Session.idToken;
+          let token = val.Session.idToken;
           getUserDataFromEmail(Value).then((data) => {
             this.setState({
               username: data.username,
               user: true,
-              image:data.image,
+              image: data.image,
               userToken: token,
             });
             // console.log(this.state.username);
@@ -78,7 +77,7 @@ class Guide extends Component {
               <Link to={"/edit?guideID=" + this.id}>
                 <div className="editButton">Edit Guide</div>
               </Link>
-              
+
               <DeleteButton id={this.id} token={this.state.userToken} />
             </div>
           ) : (
@@ -86,7 +85,11 @@ class Guide extends Component {
           )}
           <div id="guideTitle">{this.state.guideHead.title}</div>
           <div id="guideAuthor">
-            <ProfilePic username={this.state.guideHead.author} test={true} key={this.state.guideHead.author} />
+            <ProfilePic
+              username={this.state.guideHead.author}
+              test={true}
+              key={this.state.guideHead.author}
+            />
           </div>
           {this.state.user ? (
             <VoteButtons
@@ -109,7 +112,22 @@ class Guide extends Component {
               </div>
             </div>
           )}
-
+          {this.state.guideSections.length > 0 &&
+          this.state.username !== this.state.guideHead.author ? (
+            <div
+              className="nextButton"
+              onClick={() => {
+                // console.log( document.getElementById(this.state.guideSections[0]._id));
+                document
+                  .getElementById(this.state.guideSections[0]._id)
+                  .scrollIntoView({ behavior: "smooth" });
+              }}
+            >
+              Next Step
+            </div>
+          ) : (
+            ""
+          )}
           {!this.state.guideHead.image && this.state.guideHead.video && (
             <YouTube
               id="guideHeadVideo"
@@ -125,13 +143,28 @@ class Guide extends Component {
           )}
 
           <div id="guideHeadDesc">{this.state.guideHead.description}</div>
+
         </div>
 
         <div id="guideSectionContainer">
-          {this.state.guideSections.map((section) => (
-            <div className="guideSection" key={section._id}>
+          {this.state.guideSections.map((section, index, array) => (
+            <div className="guideSection" key={section._id} id={section._id}>
               <div className="guideSectionTitle">{section.title}</div>
-
+              {index < array.length - 1 ? (
+                <div
+                  className="nextButton"
+                  onClick={() => {
+                    // console.log( document.getElementById(array[index+1]._id));
+                    document
+                      .getElementById(array[index + 1]._id)
+                      .scrollIntoView({ behavior: "smooth" });
+                  }}
+                >
+                  Next Step
+                </div>
+              ) : (
+                ""
+              )}
               {!section.image && section.video && (
                 <YouTube
                   className="guideSectionVideo"
@@ -147,17 +180,20 @@ class Guide extends Component {
               )}
 
               <div className="guideSectionDesc">{section.description}</div>
+              
             </div>
           ))}
         </div>
-        <CommentBox
-          parentID={this.id}
-          user={this.state.user}
-          username={this.state.username}
-          hide={false}
-          submit={false}
-          prompt="Leave a comment"
-        />
+        <div className="guideComments">
+          <CommentBox
+            parentID={this.id}
+            user={this.state.user}
+            username={this.state.username}
+            hide={false}
+            submit={false}
+            prompt="Leave a comment"
+          />
+        </div>
       </div>
     );
   }

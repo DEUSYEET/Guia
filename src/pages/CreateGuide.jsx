@@ -38,21 +38,40 @@ class CreateGuide extends Component {
 
   url = "";
   componentDidMount() {
+    document.title = "Create Guide"
     if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
       this.url = "http://localhost:8080/uploadGuideHead";
     } else {
       this.url =
         "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/uploadGuideHead";
     }
-    // console.log(this.url)
+    session()
+  .then((val) => {
+    if (val) {
+      let { Value } = val.Attributes[2];
+      getUsername(Value).then((data) => {
+        user = data;
+        console.log(user)
+        this.setState((prevState) => ({
+          guideHead: {
+            ...prevState.guideHead,
+            author: user,
+          },
+        }));
+      });
+    }
+  })
+  .catch((err) => console.log(err));
   }
 
   onSaveGuide = () => {
-    // console.log(this.state.guideHead);
+    console.log(this.state.guideHead.author)
+    
+    let button = document.getElementById("saveHeadButton");
+    button.innerHTML = "Saving...."
     let formData = new FormData();
     formData.append("file", JSON.stringify(this.state.guideHead));
     axios.post(this.url, formData).then((res) => {
-      let button = document.getElementById("saveHeadButton");
       button.classList = "saveButton";
       button.innerHTML = "Section Saved";
       document.getElementById("addSectionButtonHead").style.display = "block";
@@ -118,6 +137,7 @@ class CreateGuide extends Component {
             type="text"
             className="guideCreatorHeadInput"
             placeholder="Description"
+            rows="10"
             onChange={(e) => {
               let description = e.target.value;
               this.setState((prevState) => ({

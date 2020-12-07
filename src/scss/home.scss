@@ -11,7 +11,7 @@
   width: 100%;
 }
 
-#homeTitle{
+#homeTitle {
   font-size: 3em;
   font-weight: bold;
 }
@@ -61,8 +61,9 @@ $previewImgSize: 1.7;
   height: 10vh;
   //   white-space: initial;
   overflow: auto;
-//   text-overflow: ellipsis;
+  //   text-overflow: ellipsis;
   word-wrap: break-word;
+  white-space: pre-wrap;
 }
 
 .guidePreviewScore {

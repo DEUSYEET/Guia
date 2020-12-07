@@ -10,6 +10,8 @@ import EditGuide from "./pages/EditGuide";
 import { logout, session, getUsername } from "./components/Authentication";
 import Board from "./pages/Board";
 import Profile from "./pages/Profile";
+import ProfilePic from "./components/ProfilePic";
+import UsersPage from "./pages/Users";
 
 // import {
 //   BrowserRouter as Router,
@@ -83,15 +85,15 @@ class App extends Component {
           <Link to="/">
             <img src="./assets/GuiaLogo1.svg" alt="Logo" id="mainLogo"></img>
           </Link>
+
           {/* <div> */}
-          {this.props.location.pathname === "/" 
-          //|| this.props.location.pathname === "/board"
-          ? (
+          {this.props.location.pathname === "/" ? (
+            //|| this.props.location.pathname === "/board"
             <input
               id="searchBar"
               type="text"
               onChange={this.onSearch}
-              placeholder="Search"
+              placeholder="🔍 Search Guides"
             ></input>
           ) : (
             ""
@@ -99,26 +101,74 @@ class App extends Component {
           {/* </div> */}
           {this.state.user ? (
             <div className="signedInButtons">
+              <div className="sidebarButton bold profileButton">
+                <ProfilePic
+                  username={this.state.username}
+                  key={this.state.username}
+                />
+              </div>
+              <Link to="/">
+                <div className="sidebarButton bold">
+                  <span role="img" aria-label="Home Page">
+                    {" "}
+                    🏠{" "}
+                  </span>
+                  Guides
+                </div>
+              </Link>
               <Link to="/createGuide">
-                <div className="sidebarButton bold">Create Guide</div>
+                <div className="sidebarButton bold">
+                  <span role="img" aria-label="Create Guide">
+                    {" "}
+                    📝{" "}
+                  </span>
+                  Create Guide
+                </div>
               </Link>
               <Link to="/board">
-                <div className="sidebarButton bold">Community Board</div>
+                <div className="sidebarButton bold">
+                  <span role="img" aria-label="Community Board">
+                    {" "}
+                    📰{" "}
+                  </span>
+                  Community Board
+                </div>
               </Link>
-              <Link to={"/profile?user=" + this.state.username}>
-                <div className="sidebarButton bold">Profile</div>
+              <Link to="/users">
+                <div className="sidebarButton bold">
+                  <span role="img" aria-label="Community Board">
+                    {" "}
+                    🔎{" "}
+                  </span>
+                  Search Users
+                </div>
               </Link>
+
               <div className="sidebarButton signOutButton" onClick={logout}>
-                Sign Out
+                ⬅ Sign Out
               </div>
             </div>
           ) : (
             <div className="signInButtons">
+            <Link to="/">
+                <div className="sidebarButton bold">
+                  <span role="img" aria-label="Home Page">
+                    {" "}
+                    🏠{" "}
+                  </span>
+                  Guides
+                </div>
+              </Link>
               <Link to="/login">
-                <div className="sidebarButton bold">Login</div>
+                <div className="sidebarButton bold">
+                  <span role="img" aria-label="Login">
+                    🚪
+                  </span>
+                  &nbsp; Login
+                </div>
               </Link>
               <Link to="/signup">
-                <div className="sidebarButton bold">Sign Up</div>
+                <div className="sidebarButton bold"><span role="img" aria-label="Sign Up">➕</span> Sign Up</div>
               </Link>
             </div>
           )}
@@ -133,7 +183,10 @@ class App extends Component {
               path="/profile"
               render={(props) => <Profile {...props} />}
             ></Route>
-
+            <Route
+              path="/users"
+              render={(props) => <UsersPage {...props} />}
+            ></Route>
             <Route
               path="/edit"
               render={(props) => <EditGuide {...props} />}
@@ -157,7 +210,7 @@ class App extends Component {
             <Route
               path="/board"
               render={(props) => (
-                <Board {...props} searchValue={this.state.searchValue}/>
+                <Board {...props} searchValue={this.state.searchValue} />
               )}
             ></Route>
 

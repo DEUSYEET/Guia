@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import ChatTools from "./ChatTools";
-import ProfilePic from "./ProfilePic";
+// import ProfilePic from "./ProfilePic";
 
 
 const ChatBox = (props) => {
@@ -30,6 +30,7 @@ const ChatBox = (props) => {
   useEffect(() => {
     messages.unshift(...props.prevLogs.filter((message) => message !== ""));
     // console.log("Prev Logs",props.prevLogs)
+     // eslint-disable-next-line
   }, []);
   useEffect(() => {
     // if (messages.length > 0) {

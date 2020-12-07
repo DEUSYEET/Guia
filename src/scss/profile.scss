@@ -98,3 +98,20 @@
 .messageUsername{
     font-weight: bold;
 }
+
+#usersPage{
+  min-height: 100vh;
+  padding: 5vh 0;
+}
+.userPreview{
+  // border: 1px solid black;
+  width: 80vw;
+  padding: 1% 0;
+}
+.userPreview:nth-child(even){
+  background-color: #69696915;
+}
+.userSearch{
+  margin: 1% 0;
+  width: 40%;
+}

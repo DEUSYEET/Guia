@@ -30,11 +30,12 @@ class CreateGuideSection extends Component {
   };
 
   onSaveGuide = () => {
+    let button = document.getElementById(this.state.submitID);
+    button.innerHTML = "Saving...."
     // console.log(this.state.guideSection);
     let formData = new FormData();
     formData.append("file", JSON.stringify(this.state.guideSection));
     axios.post(this.url, formData).then((res) => {
-      let button = document.getElementById(this.state.submitID);
       button.classList = "saveButton";
       button.innerHTML = "Saved";
     });
@@ -81,6 +82,7 @@ class CreateGuideSection extends Component {
           type="text"
           className="guideCreatorSectionInput"
           placeholder="Description"
+          rows="10"
           onChange={(e) => {
             let description = e.target.value;
             this.setState((prevState) => ({

@@ -6,6 +6,10 @@ class LoginPage extends Component {
 
   state = {};
 
+  componentDidMount(){
+    document.title = "Login"
+  }
+
   render() {
     return (
       <div id="loginPage">

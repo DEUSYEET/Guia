@@ -53,8 +53,9 @@ a {
   // border: 5px solid lighten($color: $backGroundGrey, $amount: 50);
 }
 .signOutButton{
-  position: fixed;
+  position: absolute;
   margin: 2% 0;
   padding: 2% 0;
-  bottom: 0;
+  width: 85%;
+  bottom: 7%;
 }

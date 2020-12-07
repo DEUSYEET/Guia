@@ -7,7 +7,6 @@ import {
 import FileUpload from "../components/fileUpload";
 import axios from "axios";
 import ChatBox from "../components/ChatBox";
-const tools = require("../tools");
 
 class Profile extends Component {
   id = new URLSearchParams(this.props.location.search).get("user");
@@ -38,11 +37,9 @@ class Profile extends Component {
       window.location.reload();
     });
     this.setID();
-    tools.setTransition(false); 
   }
   
   componentWillUnmount() {
-    tools.setTransition(true); 
     this.listen();
   }
 
@@ -91,6 +88,7 @@ class Profile extends Component {
 
   getUserData() {
     // console.log("ID: ", this.state.id);
+    document.title = this.state.id;
     getUserDataFromUsername(this.state.id).then((user) => {
       this.setState({
         user: user || this.defaultUser,

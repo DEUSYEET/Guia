@@ -4,6 +4,7 @@ import FileUpload from "../components/fileUpload";
 import axios from "axios";
 import { session, getUsername } from "../components/Authentication";
 import EditGuideSection from "../components/guideSectionEditor";
+import { Link } from "react-router-dom";
 
 let user = "";
 session()
@@ -51,14 +52,16 @@ class EditGuide extends Component {
   saveUrl = "";
   getUrl = "";
   componentDidMount() {
+    document.title = "Edit Guide"
+
     if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
       this.saveUrl = "http://localhost:8080/uploadGuideHead";
       this.getUrl = "http://localhost:8080/getGuide?guideId=" + this.id;
     } else {
-      this.url =
+      this.getUrl =
         "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/getGuide?guideId=" +
         this.id;
-      this.getUrl =
+      this.saveUrl =
         "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/uploadGuideHead";
     }
 
@@ -81,11 +84,12 @@ class EditGuide extends Component {
   }
 
   onSaveGuide = () => {
+    let button = document.getElementById("saveHeadButton");
+    button.innerHTML = "Saving...."
     // console.log(this.state.guideHead);
     let formData = new FormData();
     formData.append("file", JSON.stringify(this.state.guideHead));
     axios.post(this.saveUrl, formData).then((res) => {
-      let button = document.getElementById("saveHeadButton");
       button.classList = "saveButton";
       button.innerHTML = "Section Saved";
       this.setState({
@@ -146,6 +150,9 @@ class EditGuide extends Component {
   render() {
     return (
       <div id="guideCreator">
+                    <Link to={"/guide?guideID=" + this.state.guideHead.guideID} key={this.state.guideHead.guideID}>
+                  <div className="backButton"> ⬅ Back</div>
+              </Link>
         {/* <div className="id">{this.state.guideHead.guideID}</div> */}
         <div id="guideCreatorHead">
           <div className="guideCreatorLabel">Add Title</div>
@@ -170,6 +177,7 @@ class EditGuide extends Component {
             type="text"
             className="guideCreatorHeadInput"
             placeholder="Description"
+            rows="10"
             value={this.state.guideHead.description}
             onChange={(e) => {
               let description = e.target.value;

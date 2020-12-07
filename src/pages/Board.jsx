@@ -6,10 +6,11 @@ class Board extends Component {
   state = {
     user: false,
     username: "",
-    searchValue:"",
+    searchValue: "",
   };
 
   componentDidMount() {
+    document.title = "Community Board";
     session()
       .then((val) => {
         if (val) {
@@ -24,10 +25,10 @@ class Board extends Component {
         }
       })
       .catch((err) => console.log(err));
-      // console.log("Board      ----->",this.props.searchValue)
-      this.setState({
-        searchValue: this.props.searchValue ? this.props.searchValue : "",
-      });
+    // console.log("Board      ----->",this.props.searchValue)
+    this.setState({
+      searchValue: this.props.searchValue ? this.props.searchValue : "",
+    });
   }
 
   render() {
@@ -40,7 +41,7 @@ class Board extends Component {
           hide={false}
           submit={false}
           sortNew={true}
-          permaDelete = {true}
+          permaDelete={true}
           prompt="Start a discussion"
           searchValue={this.props.searchValue}
         />

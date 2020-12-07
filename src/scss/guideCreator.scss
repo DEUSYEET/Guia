@@ -16,6 +16,7 @@
 
 .guideCreatorHeadInput{
     margin: 2% 0;
+    // min-height: 50%;
 }
 
 .guideCreatorHeadAddImage{
@@ -65,5 +66,12 @@
     font-weight: bold;
     border: 1px solid red;
     border-radius: 7px;
-    
+}
+.backButton{
+    // border: solid black 1px;
+    margin: 1%;
+    width: 10%;
+    font-weight: bold;
+    font-size: 1.5em;
+    color: #424242;
 }

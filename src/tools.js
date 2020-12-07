@@ -31,12 +31,6 @@ const deleteGuide = (id, token) => {
   });
 };
 
-let transitioning = false;
-const setTransition = (isTransitioning)=>{
-  transitioning = isTransitioning;
-  // console.log(transitioning)
-}
-
 
 const saveChatLog = (roomID, chatLog) => {
   // console.log("Transitioning: ",transitioning);
@@ -63,4 +57,4 @@ const saveChatLog = (roomID, chatLog) => {
 };
 
 
-export {getVidID, deleteGuide, saveChatLog, setTransition}
+export {getVidID, deleteGuide, saveChatLog}

@@ -20,7 +20,11 @@ class LogInForm extends Component {
       })
       .catch((err) => {
         // console.error("error", err);
-        document.getElementById("errorLabel").innerHTML = err.message;
+        if(err.name === "NotAuthorizedException"){
+        document.getElementById("errorLabel").innerHTML = "Account not yet confirmed, please check your email";
+        } else{
+          document.getElementById("errorLabel").innerHTML = err.message;
+        }
         this.setState({
           loading: false,
         });

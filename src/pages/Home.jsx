@@ -12,12 +12,15 @@ class Home extends Component {
   url = "";
 
   componentDidMount() {
+    document.title = "Guía"
+
     if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
       this.url = "http://localhost:8080/getAll";
     } else {
       this.url =
         "http://guiabackend-env.eba-u9xxwbnm.us-west-1.elasticbeanstalk.com/getAll";
     }
+    // console.log(this.url)
     this.getAll();
   }
 
